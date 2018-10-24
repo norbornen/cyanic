@@ -1,29 +1,51 @@
 #!/usr/bin/env node
 
 const pSettle = require('p-settle');
+const pRetry = require('p-retry');
+const PQueue = require('p-queue');
+const { sendHtmlMessage } = require('./lib/bot');
 const cian = require('./lib/provider/cian');
 const yandex = require('./lib/provider/yandex');
 const avito = require('./lib/provider/avito');
-// const thelocals = require('./lib/provider/thelocals');
+const thelocals = require('./lib/provider/thelocals');
 
-run();
+const queue = new PQueue({concurrency: 1});
+
+console.info(new Date().toString());
+run().catch((err) => {
+    console.error('ROOT_CATCH');
+    console.error(err);
+    console.trace(err);
+});
 
 async function run() {
-    return pSettle([
+    const result = await pSettle([
         Promise.all([Promise.resolve('cian'), cian()]),
         Promise.all([Promise.resolve('yandex'), yandex()]),
         Promise.all([Promise.resolve('avito'), avito()]),
-        // Promise.all([Promise.resolve('thelocals'), thelocals()]),
-    ]).then((result) => {
-        console.info(new Date().toString());
-        result.forEach((x) => {
-            if (x.isFulfilled) {
-                console.log(`OK: ${x.value[0]}`);
+        Promise.all([Promise.resolve('thelocals'), thelocals.getOffers()])
+    ]);
+    const offers = result.reduce((acc, x) => {
+        if (x.isRejected === true) {
+            console.error(x.reason || 'FAIL WITHOUT REASON');
+        } else {
+            const [name, list] = x.value;
+            if (list && list.length > 0) {
+                acc = acc.concat(list);
             }
-            if (x.isRejected) {
-                console.log('FAIL');
-                console.trace(x.reason);
-            }
-        });
-    });
+            console.info(`OK: ${name}`);
+        }
+        return acc;
+    }, []);
+
+    offers.forEach((x, idx) => queue.add(() => {
+        let t = x.toHtml().replace(/(Россия|Москва),\s*/g, '');
+        return pRetry(() => sendHtmlMessage(t),
+                    {retries: 10, onFailedAttempt: (err) => console.warn(`idx: ${idx}, err: ${err.toString()}`)})
+                    .catch((err) => {
+                        console.log(err);
+                        console.log(t);
+                    });
+    }));
 }
+
