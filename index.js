@@ -1,16 +1,10 @@
 #!/usr/bin/env node
 
 const pSettle = require('p-settle');
-const cian = require('./lib/cian');
-const yandex = require('./lib/yandex');
+const cian = require('./lib/provider/cian');
+const yandex = require('./lib/provider/yandex');
 
-setInterval(() => {
-
-    console.log('a');
-    
-    run();
-
-}, 1000*60*15);
+run();
 
 async function run() {
     return pSettle([
