@@ -1,8 +1,11 @@
 {
   "name": "cyanic",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint --ext .js ."
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "config": "^2.0.1",

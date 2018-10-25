@@ -39,7 +39,7 @@ async function run() {
     }, []);
 
     offers.forEach((x, idx) => queue.add(() => {
-        let t = x.toHtml().replace(/(Россия|Москва),\s*/g, '');
+        const t = x.toHtml().replace(/(Россия|Москва),\s*/g, '');
         return pRetry(() => sendHtmlMessage(t),
                     {retries: 10, onFailedAttempt: (err) => console.warn(`idx: ${idx}, err: ${err.toString()}`)})
                     .catch((err) => {
