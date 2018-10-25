@@ -20,9 +20,9 @@ run().catch((err) => {
 
 async function run() {
     const result = await pSettle([
-        Promise.all([Promise.resolve('cian'), cian()]),
-        Promise.all([Promise.resolve('yandex'), yandex()]),
-        Promise.all([Promise.resolve('avito'), avito()]),
+        Promise.all([Promise.resolve('cian'), cian.getOffers()]),
+        Promise.all([Promise.resolve('yandex'), yandex.getOffers()]),
+        Promise.all([Promise.resolve('avito'), avito.getOffers()]),
         Promise.all([Promise.resolve('thelocals'), thelocals.getOffers()])
     ]);
     const offers = result.reduce((acc, x) => {
@@ -48,4 +48,3 @@ async function run() {
                     });
     }));
 }
-
