@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+'use strict';
 
 const pSettle = require('p-settle');
 const pRetry = require('p-retry');
