@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "rm -rf db && NODE_ENV=development ./index.js",
+    "prod": "NODE_ENV=production ./index.js",
     "lint": "./node_modules/.bin/eslint --ext .js ."
   },
   "dependencies": {
