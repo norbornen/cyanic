@@ -3,7 +3,7 @@
 
 const pSettle = require('p-settle');
 const pRetry = require('p-retry');
-const PQueue = require('p-queue');
+const { default: PQueue } = require('p-queue');
 const { sendHtmlMessage } = require('./lib/bot');
 const cian = require('./lib/provider/cian');
 const yandex = require('./lib/provider/yandex');

@@ -6,7 +6,7 @@
         "camelcase": 0,
         "comma-dangle": 0,
         "computed-property-spacing": 0,
-        "indent": [2, 4, {"SwitchCase": 1}],
+        "indent": [1, 4, {"SwitchCase": 1}],
         "max-len": 0,
         "new-cap" : 0,
         "no-console": 0,

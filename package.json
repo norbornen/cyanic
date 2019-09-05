@@ -15,12 +15,12 @@
     "p-queue": "^6.1.0",
     "p-retry": "^4.1.0",
     "p-settle": "^3.1.0",
-    "qs": "^6.5.2",
+    "qs": "^6.8.0",
     "ramda": "^0.26.1",
-    "telegraf": "^3.24.1"
+    "telegraf": "^3.32.0"
   },
   "devDependencies": {
-    "eslint": "^6.1.0",
-    "eslint-config-google": "^0.13.0"
+    "eslint": "^6.3.0",
+    "eslint-config-google": "^0.14.0"
   }
 }
