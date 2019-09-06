@@ -2,13 +2,16 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "esnext",
+        "sourceMap": true,
+        "declaration": true,
+        "outDir": "./dist",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "moduleResolution": "node",
-        "sourceMap": true,
-        "declaration": true,
-        "outDir": "./dist"
+        "noImplicitAny": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true
     },
-    "include": ["index.ts", "src"],
+    "include": ["src"],
     "exclude": ["node_modules"]
 }

@@ -4,25 +4,28 @@
   "main": "index.ts",
   "license": "MIT",
   "scripts": {
-    "dev": "rm -rf db && NODE_ENV=development ts-node ./index.ts",
-    "prod": "NODE_ENV=production ts-node ./index.ts",
+    "dev": "rm -rf db && NODE_ENV=development ts-node ./src/index.ts",
+    "prod": "NODE_ENV=production ts-node ./src/index.ts",
     "tslint": "tslint -p tsconfig.json -c tslint.json"
   },
   "dependencies": {
+    "@types/mongoose": "^5.5.17",
     "@types/node": "^12.7.4",
     "axios": "^0.19.0",
     "config": "^3.2.2",
     "fs-extra": "^8.1.0",
+    "mongoose": "^5.6.12",
     "p-queue": "^6.1.0",
     "p-retry": "^4.1.0",
     "p-settle": "^3.1.0",
     "qs": "^6.5.2",
     "ramda": "^0.26.1",
+    "reflect-metadata": "^0.1.13",
     "telegraf": "^3.24.1",
     "ts-node": "^8.3.0",
     "tslint": "^5.19.0",
+    "typegoose": "^5.9.0",
     "typescript": "^3.6.2"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
