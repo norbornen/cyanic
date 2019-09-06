@@ -9,6 +9,7 @@
         "allowSyntheticDefaultImports": true,
         "moduleResolution": "node",
         "noImplicitAny": true,
+        "strictNullChecks": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true
     },
