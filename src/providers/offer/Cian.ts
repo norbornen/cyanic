@@ -2,7 +2,7 @@ import { Dictionary, path, pathOr, isNil, isEmpty } from 'ramda';
 import { AbstractExtOfferProvider } from './abstract';
 import { OfferDTO, Money } from '../../models/Offer';
 
-interface ISearchOffersDesktopResponse {
+interface ISearchOffersResponse {
     data: {
         offersSerialized: Array<Dictionary<any>>
     };
@@ -16,7 +16,7 @@ export default class CianExtOfferProvider extends AbstractExtOfferProvider {
     public async getExtOffers(): Promise<OfferDTO[]> {
         const offers: OfferDTO[] = [];
         try {
-            const { data: { data: { offersSerialized: extOffers } } }: { data: ISearchOffersDesktopResponse } =
+            const { data: { data: { offersSerialized: extOffers } } }: { data: ISearchOffersResponse } =
                 await this.agent.post('/search-offers/v2/search-offers-desktop/', { jsonQuery: this.connection.config });
             if (extOffers && Array.isArray(extOffers) && extOffers.length > 0) {
                 for (const extOffer of extOffers) {
@@ -57,8 +57,8 @@ export default class CianExtOfferProvider extends AbstractExtOfferProvider {
             ext_id: (path<string>(['cianId'], extOffer) || path<string>(['id'], extOffer))!,
             ext_full_url: path<string>(['fullUrl'], extOffer)!,
             rooms_count: path<number | string>(['roomsCount'], extOffer)!,
-            flow_number: path<number | string>(['floorNumber'], extOffer),
-            flow_total: path<number | string | null>(['building', 'floorsCount'], extOffer)!,
+            floor_number: path<number | string>(['floorNumber'], extOffer),
+            floors_total: path<number | string | null>(['building', 'floorsCount'], extOffer)!,
             price, location
         };
         return offer;

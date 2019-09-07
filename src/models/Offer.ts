@@ -20,17 +20,17 @@ class Offer extends CommonModel {
     @prop({ required: true, index: true })
     public ext_id!: string;
 
-    @prop({ required: true })
+    @prop({ required: true, trim: true })
     public ext_full_url: string;
 
     @prop({ required: true })
     public rooms_count: string | number;
 
     @prop()
-    public flow_number?: string | number;
+    public floor_number?: string | number;
 
     @prop()
-    public flow_total?: string | number;
+    public floors_total?: string | number;
 
     @prop({ required: true })
     public price: Money;
