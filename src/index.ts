@@ -1,9 +1,11 @@
 import createConnection, { disconnect } from './connect';
-import ExtSourceModel, { ExtSource } from './models/ExtSource';
+import { ImportUsecase } from './usecases/ImportUsecase';
 
 createConnection({db: 'mongodb://localhost/cyanic'})
 .then(async () => {
-    await run();
+    const usecase = new ImportUsecase();
+    await usecase.getExtOffers();
+
     await disconnect();
     process.exit(0);
 })
@@ -13,29 +15,6 @@ createConnection({db: 'mongodb://localhost/cyanic'})
     process.exit(1);
 });
 
-async function run() {
-
-    console.log(ExtSourceModel);
-    console.log(ExtSource);
-
-    const q = new ExtSource();
-    q.alias = `${Math.random()} ${new Date().toString()}`;
-    q.connection = {endpoint: 'a'};
-    await ExtSourceModel.create(q);
-
-    await ExtSourceModel.create({alias: 'aaaaaaaaaaaaaaaaa', connection: {}} as ExtSource);
-
-    const zz = await ExtSourceModel.find();
-    const z = zz.shift()!;
-
-    z.alias += ` ${Math.random()}`;
-    await z.save();
-
-    // z.c
-
-    console.log(zz);
-    console.log(z);
-}
 
 // const pSettle = require('p-settle');
 // const pRetry = require('p-retry');

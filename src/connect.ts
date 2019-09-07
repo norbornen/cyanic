@@ -1,10 +1,12 @@
 import mongoose, { Mongoose } from 'mongoose';
 
+mongoose.set('debug', process.env.NODE_ENV === 'development');
+
+let Connection: Mongoose;
+
 interface IMongoDBConnectOptions {
     db: string;
 }
-
-let Connection: Mongoose;
 
 async function connect({ db }: IMongoDBConnectOptions): Promise<Mongoose> {
     try {

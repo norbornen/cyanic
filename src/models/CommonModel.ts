@@ -1,7 +1,11 @@
-import { Typegoose, prop, staticMethod, InstanceType, ModelType } from 'typegoose';
-import mongoose, { Document } from 'mongoose';
+import { Typegoose, prop, staticMethod } from 'typegoose';
 
-export default abstract class CommonModel extends Typegoose {
+
+type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getModelForClass' | 'setModelForClass' | 'buildSchema'> &
+                            { createdAt?: Date, updatedAt?: Date, is_active?: boolean };
+
+
+export default class CommonModel extends Typegoose {
     @prop()
     public createdAt: Date;
 
@@ -11,13 +15,19 @@ export default abstract class CommonModel extends Typegoose {
     @prop({ default: true })
     public is_active: boolean;
 
-    // @staticMethod
-    // public static getModelForClass<T>(t: T): mongoose.Model<ModelType<T & Document>, {}> & T {
-    //     // mongoose.Model<InstanceType<this>, {}> & this & T;
-    //     // Model<InstanceType<ExtSource>, {}> & ExtSource & typeof ExtSource
-    //     // const z: mongoose.Model<InstanceType<this>, {}> & this & T
-    //     return Object.create(this.prototype).getModelForClass(this, {schemaOptions: {timestamps: true}});
-    // }
+    @staticMethod
+    public static makeInstanse<T>(data?: CommonModelDTO<T>): T {
+        const x = Object.create(this.prototype);
+        if (data) {
+            Object.entries(data).forEach(([k, v]) => x[k] = v);
+        }
+        return x;
+    }
+
+    @staticMethod
+    public static getModelForClass<T extends CommonModel>() {
+        return this.makeInstanse<T>().getModelForClass(this, {schemaOptions: {timestamps: true}});
+    }
 }
 
-export { CommonModel };
+export { CommonModel, CommonModelDTO };

@@ -1,20 +1,32 @@
 import { prop } from 'typegoose';
-import { CommonModel } from './CommonModel';
+import { CommonModel, CommonModelDTO } from './CommonModel';
 
 interface ExtSourceConnection {
     endpoint: string;
     [index: string]: any;
 }
 
+enum ExtSourceProvider {
+    cian = 'cian',
+    yandex = 'yandex',
+    avito = 'avito',
+    thelocals = 'thelocals'
+}
+
 class ExtSource extends CommonModel {
     @prop({ required: true })
-    public alias: string;
+    public name: string;
+
+    @prop({ enum: ExtSourceProvider, required: true })
+    public provider: ExtSourceProvider;
 
     @prop({ required: true })
     public connection: ExtSourceConnection;
 }
 
-const ExtSourceModel = new ExtSource().getModelForClass(ExtSource);
+type ExtSourceDTO = CommonModelDTO<ExtSource>;
+
+const ExtSourceModel = ExtSource.getModelForClass<ExtSource>();
 
 export default ExtSourceModel;
-export { ExtSource, ExtSourceModel };
+export { ExtSourceModel, ExtSource, ExtSourceDTO, ExtSourceProvider };
