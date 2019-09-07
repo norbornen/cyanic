@@ -1,14 +1,15 @@
-import { AbstractExtOfferProvider, CtorArgs } from './abstract';
-import { Offer } from '../../models/Offer';
+import { Dictionary, path, pathOr, isNil, isEmpty } from 'ramda';
+import { AbstractExtOfferProvider } from './abstract';
+import { OfferDTO } from '../../models/Offer';
+import { Money } from 'ts-money';
 
 export default class LocalsExtOfferProvider extends AbstractExtOfferProvider {
-    constructor(...args: CtorArgs) {
-        super(...args);
-        console.log('ctor C');
+    public async getExtOffers(): Promise<OfferDTO[]> {
+        return [] as OfferDTO[];
     }
 
-    public async getExtOffers(): Promise<Offer[]> {
-        return [] as Offer[];
+    public OfferFactory(extOffer: Dictionary<any>): OfferDTO {
+        return {} as never as OfferDTO;
     }
 }
 

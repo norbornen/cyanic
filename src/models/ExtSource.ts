@@ -27,6 +27,7 @@ class ExtSource extends CommonModel {
 type ExtSourceDTO = CommonModelDTO<ExtSource>;
 
 const ExtSourceModel = ExtSource.getModelForClass<ExtSource>();
+// const ExtSourceModel = new ExtSource().getModelForClass(ExtSource);
 
 export default ExtSourceModel;
-export { ExtSourceModel, ExtSource, ExtSourceDTO, ExtSourceProvider };
+export { ExtSourceModel, ExtSource, ExtSourceDTO, ExtSourceProvider, ExtSourceConnection };

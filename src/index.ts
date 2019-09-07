@@ -4,7 +4,7 @@ import { ImportUsecase } from './usecases/ImportUsecase';
 createConnection({db: 'mongodb://localhost/cyanic'})
 .then(async () => {
     const usecase = new ImportUsecase();
-    await usecase.getExtOffers();
+    await usecase.getAndUpdateExtOffers();
 
     await disconnect();
     process.exit(0);

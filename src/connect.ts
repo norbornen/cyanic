@@ -1,6 +1,12 @@
-import mongoose, { Mongoose } from 'mongoose';
+import mongoose, { Mongoose, ConnectionOptions } from 'mongoose';
 
 mongoose.set('debug', process.env.NODE_ENV === 'development');
+const connectionOptions: ConnectionOptions =  {
+    useNewUrlParser: true,
+    autoCreate: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+};
 
 let Connection: Mongoose;
 
@@ -10,7 +16,7 @@ interface IMongoDBConnectOptions {
 
 async function connect({ db }: IMongoDBConnectOptions): Promise<Mongoose> {
     try {
-        return (Connection = await mongoose.connect(db, { useNewUrlParser: true, autoCreate: true }));
+        return (Connection = await mongoose.connect(db, connectionOptions));
     } catch (err) {
         console.error('Error connecting to database: ', err);
         throw err;

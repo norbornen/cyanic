@@ -1,6 +1,10 @@
+src/initial_data.ts
+src/_lib/*
+
 node_modules/*
 config/*
 db/*
 yarn.lock
 yarn-error.log
 .vscode/*
+.idea/*
