@@ -1,9 +1,8 @@
-src/initial_data.ts
-src/_lib/*
+src/scripts/initial_data.ts
 
 node_modules/*
 config/*
-db/*
+dist/*
 yarn.lock
 yarn-error.log
 .vscode/*

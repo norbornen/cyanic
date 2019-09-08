@@ -8,7 +8,7 @@ type CtorArgs = [ExtSourceConnection, any?];
 
 export default abstract class AbstractExtOfferProvider {
     public baseURL: string;
-    protected default_currency: 'RUR';
+    protected default_currency = 'RUR';
     protected _agent!: AxiosInstance;
 
     constructor(protected connection: ExtSourceConnection, protected params?: any) {

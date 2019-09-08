@@ -7,13 +7,13 @@ type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getM
 
 export default class CommonModel extends Typegoose {
     @prop()
-    public createdAt: Date;
+    public createdAt!: Date;
 
     @prop()
-    public updatedAt: Date;
+    public updatedAt!: Date;
 
     @prop({ default: true })
-    public is_active: boolean;
+    public is_active!: boolean;
 
     @staticMethod
     public static makeInstanse<T>(data?: CommonModelDTO<T>): T {

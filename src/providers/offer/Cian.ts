@@ -15,16 +15,13 @@ export default class CianExtOfferProvider extends AbstractExtOfferProvider {
 
     public async getExtOffers(): Promise<OfferDTO[]> {
         const offers: OfferDTO[] = [];
-        try {
-            const { data: { data: { offersSerialized: extOffers } } }: { data: ISearchOffersResponse } =
-                await this.agent.post('/search-offers/v2/search-offers-desktop/', { jsonQuery: this.connection.config });
-            if (extOffers && Array.isArray(extOffers) && extOffers.length > 0) {
-                for (const extOffer of extOffers) {
-                    offers.push(this.OfferFactory(extOffer));
-                }
+
+        const { data: { data: { offersSerialized: extOffers } } }: { data: ISearchOffersResponse } =
+            await this.agent.post('/search-offers/v2/search-offers-desktop/', { jsonQuery: this.connection.config });
+        if (extOffers && Array.isArray(extOffers) && extOffers.length > 0) {
+            for (const extOffer of extOffers) {
+                offers.push(this.OfferFactory(extOffer));
             }
-        } catch (err) {
-            console.error('CianExtOfferProvider::getExtOffers', err);
         }
 
         console.log(`[cian] offers: ${offers.length}`);

@@ -16,20 +16,16 @@ export default class YandexExtOfferProvider extends AbstractExtOfferProvider {
 
     public async getExtOffers(): Promise<OfferDTO[]> {
         const offers: OfferDTO[] = [];
-        try {
-            const { data: { response: { search: { offers: { entities: extOffers } } } } }: { data: ISearchOffersResponse } =
-                await this.agent.get('/gate/react-page/get/', { params: this.connection.config });
-            if (extOffers && Array.isArray(extOffers) && extOffers.length > 0) {
-                for (const extOffer of extOffers) {
-                    offers.push(this.OfferFactory(extOffer));
-                }
+
+        const { data: { response: { search: { offers: { entities: extOffers } } } } }: { data: ISearchOffersResponse } =
+            await this.agent.get('/gate/react-page/get/', { params: this.connection.config });
+        if (extOffers && Array.isArray(extOffers) && extOffers.length > 0) {
+            for (const extOffer of extOffers) {
+                offers.push(this.OfferFactory(extOffer));
             }
-        } catch (err) {
-            console.error('YandexExtOfferProvider::getExtOffers', err);
         }
 
         console.log(`[yandex] offers: ${offers.length}`);
-        console.log('Y', offers);
         return offers;
     }
 

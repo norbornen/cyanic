@@ -1,11 +1,12 @@
 {
   "name": "cyanic",
   "version": "0.0.1",
-  "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV=development ts-node ./src/index.ts",
-    "prod": "NODE_ENV=production ts-node ./src/index.ts",
+    "updater:dev": "NODE_ENV=development ts-node ./src/scripts/updater.ts",
+    "updater:prod": "NODE_ENV=production ts-node ./src/scripts/updater.ts",
+    "notifier:dev": "NODE_ENV=development ts-node ./src/scripts/notifier.ts",
+    "notifier:prod": "NODE_ENV=production ts-node ./src/scripts/notifier.ts",
     "tslint": "tslint -p tsconfig.json -c tslint.json"
   },
   "dependencies": {

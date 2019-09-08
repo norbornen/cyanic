@@ -11,17 +11,14 @@ export default class LocalsExtOfferProvider extends AbstractExtOfferProvider {
 
     public async getExtOffers(): Promise<OfferDTO[]> {
         const offers: OfferDTO[] = [];
-        try {
-            let { data: { ads: extOffers } }: { data: ISearchOffersResponse } =
-                await this.agent.post('/api/frontend/rooms', { ...this.connection.config });
-            if (extOffers && Array.isArray(extOffers) && extOffers.length > 0) {
-                extOffers = extOffers.filter((extOffer) => geo_filter(extOffer.address));
-                for (const extOffer of extOffers) {
-                    offers.push(this.OfferFactory(extOffer));
-                }
+
+        let { data: { ads: extOffers } }: { data: ISearchOffersResponse } =
+            await this.agent.post('/api/frontend/rooms', { ...this.connection.config });
+        if (extOffers && Array.isArray(extOffers) && extOffers.length > 0) {
+            extOffers = extOffers.filter((extOffer) => geo_filter(extOffer.address));
+            for (const extOffer of extOffers) {
+                offers.push(this.OfferFactory(extOffer));
             }
-        } catch (err) {
-            console.error('LocalsExtOfferProvider::getExtOffers', err);
         }
 
         console.log(`[thelocals] offers: ${offers.length}`);

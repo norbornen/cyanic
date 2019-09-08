@@ -15,13 +15,13 @@ enum ExtSourceProvider {
 
 class ExtSource extends CommonModel {
     @prop({ required: true })
-    public name: string;
+    public name!: string;
 
     @prop({ enum: ExtSourceProvider, required: true })
-    public provider: ExtSourceProvider;
+    public provider!: ExtSourceProvider;
 
     @prop({ required: true })
-    public connection: ExtSourceConnection;
+    public connection!: ExtSourceConnection;
 }
 
 type ExtSourceDTO = CommonModelDTO<ExtSource>;
