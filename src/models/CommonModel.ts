@@ -6,10 +6,10 @@ type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getM
 
 
 export default class CommonModel extends Typegoose {
-    @prop()
+    @prop({ select: false })
     public createdAt!: Date;
 
-    @prop()
+    @prop({ select: false })
     public updatedAt!: Date;
 
     @prop({ default: true })

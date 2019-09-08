@@ -33,7 +33,7 @@ abstract class Offer extends CommonModel {
     public data?: object;
 
     @prop({ default: false })
-    public is_telegram_notification_send?: boolean;
+    public is_notifications_send?: boolean;
 }
 
 

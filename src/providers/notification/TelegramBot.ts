@@ -1,5 +1,21 @@
+import Telegraf, { ContextMessageUpdate } from 'telegraf';
+import PQueue from 'p-queue';
+
+class TelegramBot {
+    private _bot: Telegraf<ContextMessageUpdate>;
+
+    // protected get agent(): AxiosInstance {
+    //     if (!this._agent) {
+    //         this._agent = createHttpAgent(this.baseURL);
+    //     }
+    //     return this._agent;
+    // }
+}
+
+export default TelegramBot;
+export { TelegramBot };
+
 // const pRetry = require('p-retry');
-// const PQueue = require('p-queue');
 // const { sendHtmlMessage } = require('./lib/bot');
 // const queue = new PQueue({concurrency: 1});
 // async function run() {

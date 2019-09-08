@@ -1,12 +1,11 @@
 import createConnection, { disconnect } from '../mongooseConnect';
-import { ImportUsecase } from '../usecases/ImportUsecase';
+import { NotificationUsecase } from '../usecases/NotificationUsecase';
 
 createConnection({db: 'mongodb://localhost/cyanic'})
 .then(async () => {
     console.info('[notifier] ', new Date().toString());
-
-    // const usecase = new ImportUsecase();
-    // await usecase.getAndUpdateExtFlatOffers();
+    const usecase = new NotificationUsecase();
+    await usecase.sendNotifications();
 
     await disconnect();
     process.exit(0);

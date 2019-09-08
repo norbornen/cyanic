@@ -4,7 +4,6 @@ import { ImportUsecase } from '../usecases/ImportUsecase';
 createConnection({db: 'mongodb://localhost/cyanic'})
 .then(async () => {
     console.info('[updater] ', new Date().toString());
-
     const usecase = new ImportUsecase();
     await usecase.getAndUpdateExtFlatOffers();
 
