@@ -1,11 +1,9 @@
-import PQueue from 'p-queue';
 import pSettle from 'p-settle';
 import { notificationChannelProviderFactory } from '../providers/notification';
 import NotificationChannelModel from '../models/NotificationChannel';
-import FlatOfferModel, { FlatOffer } from '../models/Offer';
+import FlatOfferModel from '../models/Offer';
 
 export class NotificationUsecase {
-    private readonly queue = new PQueue({ concurrency: 1 });
 
     public async sendNotifications(): Promise<any> {
         const [notificationChannels, flatOffers] = await Promise.all([
@@ -14,17 +12,34 @@ export class NotificationUsecase {
         ]);
         if (notificationChannels && notificationChannels.length > 0) {
             for (const offer of flatOffers) {
-                for (const channel of notificationChannels) {
-                    try {
-                        const provider = notificationChannelProviderFactory(channel);
-                        await provider.send(offer);
-                    } catch (err) {
-                        console.log(err);
+                const notificationResults = await pSettle(
+                    notificationChannels.map((nc) => {
+                        const provider = notificationChannelProviderFactory(nc);
+                        return provider.send(offer);
+                    })
+                );
+                const has_fail = notificationResults.reduce((acc, x) => {
+                    if (x.isFulfilled) {
+                        acc = acc.concat(x.value || false);
                     }
-                    // queue.add(() => {};
+                    if (x.isRejected || !x.isFulfilled) {
+                        if ('reason' in x && x.reason) {
+                            console.error(x.reason);
+                        }
+                        acc.push(false);
+                    }
+                    return acc;
+                }, [] as boolean[])
+                .some((x) => x === false);
+
+                if (!has_fail) {
+                    offer.is_notifications_send = true;
+                    await offer.save();
                 }
-                break;
             }
         }
+
+        console.info('[notify] qty=' + flatOffers.filter(({is_notifications_send}) => is_notifications_send === true).length);
     }
+
 }

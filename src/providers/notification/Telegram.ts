@@ -7,8 +7,8 @@ import AbstractNotifcationProvider, { CtorArgs } from './abstract';
 
 
 class TelegramNotifcationProvider extends AbstractNotifcationProvider {
-    private _bot: Telegraf<ContextMessageUpdate>;
-    private compiled: ejs.AsyncTemplateFunction;
+    private _bot!: Telegraf<ContextMessageUpdate>;
+    private compiled!: ejs.AsyncTemplateFunction;
     private readonly sendMessageExtraParameters: ExtraEditMessage = { parse_mode: 'HTML', disable_web_page_preview: true };
 
     constructor(...args: CtorArgs) {
