@@ -1,4 +1,4 @@
-import { Dictionary, path, pathOr, isNil, isEmpty } from 'ramda';
+import { Dictionary, path, pathOr } from 'ramda';
 import geo_filter from '../../tools/geo_filter';
 import { AbstractExtOfferProvider } from './abstract';
 import { OfferDTO, Money } from '../../models/Offer';

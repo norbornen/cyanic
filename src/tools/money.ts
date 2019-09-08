@@ -10,7 +10,7 @@ const Currencies = {
 class Money extends MoneyBase {
     constructor(amount: number = -1, currency: string | ICurrency = 'RUR') {
         if (typeof currency === 'string' && currency in Currencies) {
-            currency = path<ICurrency>([currency], Currencies)!;
+            currency = path<ICurrency>([currency === 'RUB' ? 'RUR' : currency], Currencies)!;
         }
         super(amount, currency);
     }
