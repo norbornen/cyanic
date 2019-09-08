@@ -18,21 +18,20 @@ export class NotificationUsecase {
                         return provider.send(offer);
                     })
                 );
-                const has_fail = notificationResults.reduce((acc, x) => {
+                const hasFail = notificationResults.reduce((acc, x) => {
+                    let ok = false;
                     if (x.isFulfilled) {
-                        acc = acc.concat(x.value || false);
+                        ok = x.value;
                     }
-                    if (x.isRejected || !x.isFulfilled) {
-                        if ('reason' in x && x.reason) {
-                            console.error(x.reason);
-                        }
-                        acc.push(false);
+                    if (x.isRejected && 'reason' in x && x.reason) {
+                        console.error(x.reason);
                     }
+                    acc.push(ok || false);
                     return acc;
                 }, [] as boolean[])
                 .some((x) => x === false);
 
-                if (!has_fail) {
+                if (!hasFail) {
                     offer.is_notifications_send = true;
                     await offer.save();
                 }

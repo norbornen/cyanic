@@ -28,7 +28,6 @@
     "ts-node": "^8.3.0",
     "tslint": "^5.19.0",
     "typegoose": "^5.9.0",
-    "typescript": "^3.6.2",
-    "user-agents": "^1.0.372"
+    "typescript": "^3.6.2"
   }
 }
