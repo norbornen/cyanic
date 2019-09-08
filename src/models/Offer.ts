@@ -40,7 +40,7 @@ abstract class Offer extends CommonModel {
 @pre<FlatOffer>(/^findOneAndUpdate/, function() {
     const location = path<FlatOfferLocation>(['_update', 'location'], this);
     if (location && 'address' in location && location.address) {
-        location.short_address = location.address.replace(/(Россия|Москва),\s*/g, '');
+        location.short_address = location.address.replace(/(Россия|Москва),\s*/g, '').replace(/,\s?,/g, ',');
     }
 })
 @index({ source: 1, ext_id: 1 }, { unique: true })

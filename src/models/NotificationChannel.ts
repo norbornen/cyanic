@@ -8,18 +8,20 @@ enum NotificationChannelProvider {
 }
 
 class NotificationChannel extends CommonModel {
-    @prop({ required: true })
-    public name!: string;
+    @prop()
+    public name?: string;
 
     @prop({ enum: NotificationChannelProvider, required: true })
     public provider!: NotificationChannelProvider;
 
     @prop({ required: true })
     public connection!: Dictionary<any>;
+
+    @prop()
+    public template?: Dictionary<any>;
 }
 
 type NotificationChannelDTO = CommonModelDTO<NotificationChannel>;
-
 const NotificationChannelModel = NotificationChannel.getModelForClass<NotificationChannel>();
 
 
