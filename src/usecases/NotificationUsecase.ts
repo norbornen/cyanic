@@ -23,6 +23,7 @@ export class NotificationUsecase {
                     }
                     // queue.add(() => {};
                 }
+                break;
             }
         }
     }

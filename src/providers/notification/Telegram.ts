@@ -1,10 +1,9 @@
-import { Dictionary } from 'ramda';
+import { isNil, isEmpty } from 'ramda';
 import * as ejs from 'ejs';
-import Telegraf, { ContextMessageUpdate } from 'telegraf';
+import Telegraf, { ContextMessageUpdate, TelegrafOptions } from 'telegraf';
 import { ExtraEditMessage } from 'telegraf/typings/telegram-types';
-import pRetry from 'p-retry';
+import ProxyAgent from 'proxy-agent';
 import AbstractNotifcationProvider, { CtorArgs } from './abstract';
-
 
 
 class TelegramNotifcationProvider extends AbstractNotifcationProvider {
@@ -19,30 +18,26 @@ class TelegramNotifcationProvider extends AbstractNotifcationProvider {
 
     private get bot(): Telegraf<ContextMessageUpdate> {
         if (!this._bot) {
-            this._bot = new Telegraf(this.connection.token);
+            const telegrafOptions: TelegrafOptions = {};
+            if ('proxy' in this.connection && !isNil(this.connection.proxy) && !isEmpty(this.connection.proxy)) {
+                const agent: any = new ProxyAgent(this.connection.proxy);
+                telegrafOptions.telegram = { agent };
+            }
+            this._bot = new Telegraf(this.connection.token, telegrafOptions);
         }
         return this._bot;
     }
 
     public async send(msg_data: ejs.Data): Promise<boolean> {
+        let ok: boolean = false;
         const message = await this.compiled({ data: msg_data });
         try {
-            console.log('...');
-            const o = await this.bot.telegram.sendMessage(this.connection.chatId, message, this.sendMessageExtraParameters);
-            console.log('send', o);
+            await this.bot.telegram.sendMessage(this.connection.chatId, message, this.sendMessageExtraParameters);
+            ok = true;
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
-        return true;
-
-//         return pRetry(() => sendHtmlMessage(t),
-//                     {retries: 10, onFailedAttempt: (err) => console.warn(`idx: ${idx}, err: ${err.toString()}`)})
-//                     .catch((err) => {
-//                         console.log(err);
-//                         console.log(t);
-//                     });
-
-        return false;
+        return ok;
     }
 }
 
