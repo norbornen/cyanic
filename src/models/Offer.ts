@@ -1,10 +1,11 @@
-import { path, Dictionary } from 'ramda';
+// tslint:disable:max-classes-per-file
+import { path } from 'ramda';
 import { prop, Ref, index, pre } from 'typegoose';
 import { Money } from '../tools/money';
 import { CommonModel, CommonModelDTO } from './CommonModel';
 import { ExtSource } from './ExtSource';
 
-interface OfferLocation {
+interface FlatOfferLocation {
     address: string;
     short_address?: string;
     full_address?: string;
@@ -14,14 +15,8 @@ interface OfferLocation {
     };
 }
 
-@pre<Offer>(/^findOneAndUpdate/, function() {
-    const location = path<OfferLocation>(['_update', 'location'], this);
-    if (location && 'address' in location && location.address) {
-        location.short_address = location.address.replace(/(Россия|Москва),\s*/g, '');
-    }
-})
 @index({ source: 1, ext_id: 1 }, { unique: true })
-class Offer extends CommonModel {
+abstract class Offer extends CommonModel {
     @prop({ required: true, ref: ExtSource })
     public source!: Ref<ExtSource>;
 
@@ -30,6 +25,26 @@ class Offer extends CommonModel {
 
     @prop({ required: true, trim: true })
     public ext_full_url!: string;
+
+    @prop({ required: true })
+    public price!: Money;
+
+    @prop({ select: false })
+    public data?: object;
+
+    @prop({ default: false })
+    public is_telegram_notification_send?: boolean;
+}
+
+
+@pre<FlatOffer>(/^findOneAndUpdate/, function() {
+    const location = path<FlatOfferLocation>(['_update', 'location'], this);
+    if (location && 'address' in location && location.address) {
+        location.short_address = location.address.replace(/(Россия|Москва),\s*/g, '');
+    }
+})
+@index({ source: 1, ext_id: 1 }, { unique: true })
+class FlatOffer extends Offer {
 
     @prop({ required: true })
     public rooms_count!: string | number;
@@ -41,25 +56,15 @@ class Offer extends CommonModel {
     public floors_total?: string | number;
 
     @prop({ required: true })
-    public price!: Money;
+    public location!: FlatOfferLocation;
 
-    @prop({ required: true })
-    public location!: OfferLocation;
-
-    @prop()
-    public with_children?: boolean;
-
-    @prop()
-    public data?: object;
-
-    @prop({ default: false })
-    public is_telegram_notification_send?: boolean;
 }
 
-type OfferDTO = Omit<CommonModelDTO<Offer>, 'source'> & { source?: string };
+type FlatOfferDTO = Omit<CommonModelDTO<FlatOffer>, 'source'> & { source?: string };
 
-const OfferModel = Offer.getModelForClass<Offer>();
-// const OfferModel = new Offer().getModelForClass(Offer);
+// const OfferModel = Offer.getModelForClass<Offer>({ collection: 'offers', discriminatorKey: '_classname' });
+// const FlatOfferModel = OfferModel.discriminator('FlatOfferModel', new FlatOffer().buildSchema<FlatOffer>(FlatOffer));
+const FlatOfferModel = FlatOffer.getModelForClass<FlatOffer>({ collection: 'offers', discriminatorKey: '_classname' });
 
-export default OfferModel;
-export { OfferModel, Offer, OfferDTO, Money };
+export default FlatOfferModel;
+export { FlatOfferModel, FlatOffer, FlatOfferDTO, Money };

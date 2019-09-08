@@ -1,4 +1,4 @@
-import { Typegoose, prop, staticMethod } from 'typegoose';
+import { Typegoose, GetModelForClassOptions, prop, staticMethod } from 'typegoose';
 
 
 type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getModelForClass' | 'setModelForClass' | 'buildSchema'> &
@@ -25,8 +25,9 @@ export default class CommonModel extends Typegoose {
     }
 
     @staticMethod
-    public static getModelForClass<T extends CommonModel>() {
-        return this.makeInstanse<T>().getModelForClass(this, {schemaOptions: {timestamps: true}});
+    public static getModelForClass<T extends CommonModel>(schemaOptions?: GetModelForClassOptions['schemaOptions']) {
+        schemaOptions = Object.assign({timestamps: true}, schemaOptions || {});
+        return this.makeInstanse<T>().getModelForClass(this, { schemaOptions });
     }
 }
 

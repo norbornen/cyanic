@@ -2,11 +2,11 @@ import { AxiosInstance } from 'axios';
 import { Dictionary } from 'ramda';
 import { createHttpAgent } from '../../tools/agent';
 import { ExtSourceConnection } from '../../models/ExtSource';
-import { OfferDTO } from '../../models/Offer';
+import { FlatOfferDTO } from '../../models/Offer';
 
 type CtorArgs = [ExtSourceConnection, any?];
 
-export default abstract class AbstractExtOfferProvider {
+export default abstract class AbstractExtFlatOfferProvider {
     public baseURL: string;
     protected default_currency = 'RUR';
     protected _agent!: AxiosInstance;
@@ -22,8 +22,8 @@ export default abstract class AbstractExtOfferProvider {
         return this._agent;
     }
 
-    public abstract async getExtOffers(): Promise<OfferDTO[]>;
-    public abstract OfferFactory(extOffer: Dictionary<any>): OfferDTO;
+    public abstract async getExtFlatOffers(): Promise<FlatOfferDTO[]>;
+    public abstract FlatOfferFactory(extFlatOffer: Dictionary<any>): FlatOfferDTO;
 }
 
-export { AbstractExtOfferProvider, CtorArgs };
+export { AbstractExtFlatOfferProvider, CtorArgs };

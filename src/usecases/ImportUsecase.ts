@@ -1,24 +1,25 @@
 import pSettle from 'p-settle';
 import { isNil, isEmpty } from 'ramda';
 import ExtSourceModel from '../models/ExtSource';
-import { extOfferProviderFactory } from '../providers/offer';
-import OfferModel, { Offer, OfferDTO } from '../models/Offer';
+import { extFlatOfferProviderFactory } from '../providers/flat_offer';
+import FlatOfferModel, { FlatOffer, FlatOfferDTO } from '../models/Offer';
 
 
 export class ImportUsecase {
-    public async getExtOffers(): Promise<OfferDTO[]> {
+
+    public async getExtFlatOffers(): Promise<FlatOfferDTO[]> {
         const extSources = await ExtSourceModel.find({ is_active: true });
 
         const importResults = await pSettle(
-            extSources.map(async (extSource): Promise<OfferDTO[]> => {
-                const provider = extOfferProviderFactory(extSource);
-                const offers = await provider.getExtOffers();
+            extSources.map(async (extSource): Promise<FlatOfferDTO[]> => {
+                const provider = extFlatOfferProviderFactory(extSource);
+                const offers = await provider.getExtFlatOffers();
                 offers.forEach((offer) => offer.source = extSource.id);
                 return offers;
             })
         );
 
-        const extOffers = importResults
+        const extFlatOffers = importResults
             .reduce((acc, x) => {
                 if (x.isRejected) {
                     console.error(x.reason);
@@ -27,19 +28,19 @@ export class ImportUsecase {
                     acc = acc.concat(x.value);
                 }
                 return acc;
-            }, [] as OfferDTO[])
-            .filter((extOffer) => !(isNil(extOffer) || isEmpty(extOffer)));
+            }, [] as FlatOfferDTO[])
+            .filter((extFlatOffer) => !(isNil(extFlatOffer) || isEmpty(extFlatOffer)));
 
-        return extOffers;
+        return extFlatOffers;
     }
 
-    public async updateExtOffers(extOffers: OfferDTO[]): Promise<Offer[]> {
-        const offers: Offer[] = [];
-        if (extOffers && extOffers.length > 0) {
-            for (const extOffer of extOffers) {
-                const offer = await OfferModel.findOneAndUpdate(
-                    { ext_id: extOffer.ext_id, source: extOffer.source },
-                    extOffer,
+    public async updateExtFlatOffers(extFlatOffers: FlatOfferDTO[]): Promise<FlatOffer[]> {
+        const offers: FlatOffer[] = [];
+        if (extFlatOffers && extFlatOffers.length > 0) {
+            for (const extFlatOffer of extFlatOffers) {
+                const offer = await FlatOfferModel.findOneAndUpdate(
+                    { ext_id: extFlatOffer.ext_id, source: extFlatOffer.source },
+                    extFlatOffer,
                     { new: true, upsert: true, setDefaultsOnInsert: true }
                 );
                 offers.push(offer!);
@@ -48,9 +49,9 @@ export class ImportUsecase {
         return offers;
     }
 
-    public async getAndUpdateExtOffers(): Promise<Offer[]> {
-        const extOffers = await this.getExtOffers();
-        return this.updateExtOffers(extOffers);
+    public async getAndUpdateExtFlatOffers(): Promise<FlatOffer[]> {
+        const extFlatOffers = await this.getExtFlatOffers();
+        return this.updateExtFlatOffers(extFlatOffers);
     }
 
 }
