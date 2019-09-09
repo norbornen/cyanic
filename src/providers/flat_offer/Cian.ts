@@ -13,6 +13,8 @@ export default class CianExtFlatOfferProvider extends AbstractExtFlatOfferProvid
     //     super(...args);
     // }
 
+    private static EXCLUDE_ADDRESS_ITEM_GEOTYPE: string[] = ['location', 'district', 'underground'];
+
     public async getExtFlatOffers(): Promise<FlatOfferDTO[]> {
         const offers: FlatOfferDTO[] = [];
 
@@ -36,10 +38,17 @@ export default class CianExtFlatOfferProvider extends AbstractExtFlatOfferProvid
         //
         const latitude = path<number>(['geo', 'coordinates', 'lat'], extFlatOffer);
         const longitude = path<number>(['geo', 'coordinates', 'lng'], extFlatOffer);
-        const addressShort = path<string>(['geo', 'userInput'], extFlatOffer);
-        const addressFull = pathOr<[]>([], ['geo', 'address'], extFlatOffer)
-                                .map((x) => path<string>(['name'], x)).filter((name) => !(isNil(name) || isEmpty(name)))
-                                .join(', ');
+        const addressShort = pathOr<Array<Dictionary<any>>>([], ['geo', 'address'], extFlatOffer)
+            .filter((x) => x && CianExtFlatOfferProvider.EXCLUDE_ADDRESS_ITEM_GEOTYPE.indexOf(x.geoType) === -1)
+            .map((x) => path<string>(['fullName'], x) || path<string>(['name'], x))
+            .filter((name) => !(isNil(name) || isEmpty(name)))
+            .join(', ')
+            || path<string>(['geo', 'userInput'], extFlatOffer);
+        const addressFull = pathOr<Array<Dictionary<any>>>([], ['geo', 'address'], extFlatOffer)
+            .map((x) => path<string>(['fullName'], x) || path<string>(['name'], x))
+            .filter((name) => !(isNil(name) || isEmpty(name)))
+            .join(', ');
+
         const location: FlatOfferDTO['location'] = {
             address: addressShort || addressFull,
             full_address: addressFull

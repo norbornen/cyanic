@@ -6,6 +6,7 @@ const connectionOptions: ConnectionOptions =  {
     autoCreate: true,
     useCreateIndex: true,
     useFindAndModify: false,
+    useUnifiedTopology: true
 };
 
 let Connection: Mongoose;
