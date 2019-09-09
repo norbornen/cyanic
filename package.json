@@ -2,12 +2,17 @@
   "name": "cyanic-ts",
   "version": "0.0.1",
   "license": "MIT",
+  "bin": {
+    "cyanic-updater": "./dist/scripts/updater.js",
+    "cyanic-notifier": "./dist/scripts/notifier.js"
+  },
   "scripts": {
     "updater": "NODE_ENV=production ts-node ./src/scripts/updater.ts",
     "updater:dev": "NODE_ENV=development ts-node ./src/scripts/updater.ts",
     "notifier": "NODE_ENV=production ts-node ./src/scripts/notifier.ts",
     "notifier:dev": "NODE_ENV=development ts-node ./src/scripts/notifier.ts",
-    "tslint": "tslint -p tsconfig.json -c tslint.json"
+    "tslint": "tslint -p tsconfig.json -c tslint.json",
+    "build": "rm -rf dist && tsc --strict && chmod +x dist/scripts/updater.js dist/scripts/notifier.js"
   },
   "dependencies": {
     "@types/ejs": "^2.6.3",

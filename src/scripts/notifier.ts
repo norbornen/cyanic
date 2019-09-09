@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import createConnection, { disconnect } from '../mongooseConnect';
 import { NotificationUsecase } from '../usecases/NotificationUsecase';
 
