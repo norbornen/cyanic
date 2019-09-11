@@ -36,11 +36,11 @@ abstract class Offer extends CommonModel {
     public is_notifications_send?: boolean;
 }
 
-
+const oddAddressPartRegexp = /(Россия|г\.?\s?Москва|Москва),\s*/g;
 @pre<FlatOffer>(/^findOneAndUpdate/, function() {
     const location = path<FlatOfferLocation>(['_update', 'location'], this);
     if (location && 'address' in location && location.address) {
-        location.short_address = location.address.replace(/(Россия|Москва),\s*/g, '').replace(/,\s?,/g, ',');
+        location.short_address = location.address.replace(oddAddressPartRegexp, '').replace(/,\s?,/g, ',');
     }
 })
 @index({ source: 1, ext_id: 1 }, { unique: true })

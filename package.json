@@ -17,7 +17,7 @@
   "dependencies": {
     "@types/ejs": "^2.6.3",
     "@types/mongoose": "^5.5.17",
-    "@types/node": "^12.7.4",
+    "@types/node": "^12.7.5",
     "@types/qs": "^6.5.3",
     "@types/ramda": "^0.26.21",
     "axios": "^0.19.0",
