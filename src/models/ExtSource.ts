@@ -1,5 +1,6 @@
-import { prop } from 'typegoose';
+import { prop, arrayProp, Ref } from 'typegoose';
 import { CommonModel, CommonModelDTO } from './CommonModel';
+import { NotificationChannel } from './NotificationChannel';
 
 interface ExtSourceConnection {
     endpoint: string;
@@ -22,6 +23,9 @@ class ExtSource extends CommonModel {
 
     @prop({ required: true })
     public connection!: ExtSourceConnection;
+
+    @arrayProp({ itemsRef: NotificationChannel })
+    public notification_channels?: Array<Ref<NotificationChannel>>;
 }
 
 type ExtSourceDTO = CommonModelDTO<ExtSource>;

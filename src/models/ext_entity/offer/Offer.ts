@@ -1,16 +1,14 @@
 import { prop, index } from 'typegoose';
-import { Money } from '../tools/money';
-import { ExtEntity } from './ExtEntity';
+import { Money } from '../../../tools/money';
+import { ExtEntity } from '../ExtEntity';
 
 @index({ source: 1, ext_id: 1 }, { unique: true })
+@index({ is_active: 1, createdAt: 1 })
 abstract class Offer extends ExtEntity {
     @prop({ required: true })
     public price!: Money;
 
-    @prop({ select: false })
-    public data?: object;
-
-    @prop({ default: false })
+    @prop({ default: true })
     public is_notifications_send?: boolean;
 }
 
