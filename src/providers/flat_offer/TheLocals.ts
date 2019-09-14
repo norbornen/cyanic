@@ -1,7 +1,7 @@
 import { Dictionary, path, pathOr, isNil, isEmpty } from 'ramda';
 import geo_filter from '../../tools/geo_filter';
 import { AbstractExtFlatOfferProvider } from './abstract';
-import { FlatOfferDTO, Money } from '../../models/Offer';
+import { FlatOfferDTO, Money } from '../../models/ext_entity/offer/FlatOffer';
 
 interface ISearchFlatOffersResponse {
     ads: Array<Dictionary<any>>;
@@ -44,7 +44,7 @@ export default class LocalsExtFlatOfferProvider extends AbstractExtFlatOfferProv
 
         //
         const offer: FlatOfferDTO = {
-            data: extFlatOffer,
+            ext_data: extFlatOffer,
             ext_id: path<string>(['id'], extFlatOffer)!,
             ext_full_url: this.baseURL + path<string>(['path'], extFlatOffer)!,
             rooms_count: path<number | string>(['rooms'], extFlatOffer)!,

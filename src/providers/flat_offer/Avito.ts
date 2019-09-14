@@ -1,7 +1,7 @@
 import { Dictionary, path, pathOr } from 'ramda';
 import geo_filter from '../../tools/geo_filter';
 import { AbstractExtFlatOfferProvider } from './abstract';
-import { FlatOfferDTO, Money } from '../../models/Offer';
+import { FlatOfferDTO, Money } from '../../models/ext_entity/offer/FlatOffer';
 
 interface ISearchFlatOffersResponse {
     items: Array<Dictionary<any>>;
@@ -51,13 +51,18 @@ export default class AvitoExtFlatOfferProvider extends AbstractExtFlatOfferProvi
         }
 
         //
+        const rooms_count = pathOr<number | string>('-', ['ext', 'rooms'], extFlatOffer);
+        const floor_number = pathOr<number | string>('-', ['ext', 'floor'], extFlatOffer);
+        const floors_total = pathOr<number | string>('-', ['ext', 'floors_count'], extFlatOffer);
+
+        //
         const offer: FlatOfferDTO = {
-            data: extFlatOffer,
+            ext_data: extFlatOffer,
             ext_id: path<string>(['id'], extFlatOffer)!,
             ext_full_url: this.baseURL + path<string>(['url'], extFlatOffer)!,
-            rooms_count: pathOr<number | string>('-', ['ext', 'rooms'], extFlatOffer)!,
-            floor_number: pathOr<number | string>('-', ['ext', 'floor'], extFlatOffer),
-            floors_total: pathOr<number | string>('-', ['ext', 'floors_count'], extFlatOffer)!,
+            rooms_count: rooms_count && /^\d+$/.test(rooms_count + '') ? Number(rooms_count) : rooms_count,
+            floor_number: floor_number && /^\d+$/.test(floor_number + '') ? Number(floor_number) : floor_number,
+            floors_total: floors_total && /^\d+$/.test(floors_total + '') ? Number(floors_total) : floors_total,
             price, location
         };
         return offer;

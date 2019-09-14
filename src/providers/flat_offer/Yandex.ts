@@ -1,6 +1,6 @@
 import { Dictionary, path, pathOr, isNil } from 'ramda';
 import { AbstractExtFlatOfferProvider } from './abstract';
-import { FlatOfferDTO, Money } from '../../models/Offer';
+import { FlatOfferDTO, Money } from '../../models/ext_entity/offer/FlatOffer';
 
 interface ISearchFlatOffersResponse {
     response: {
@@ -48,15 +48,18 @@ export default class YandexExtFlatOfferProvider extends AbstractExtFlatOfferProv
         }
 
         //
-        const floor_number = pathOr<number[]>([], ['floorsFlatOffered'], extFlatOffer).find((x) => !isNil(x));
+        const floor_number = ([] as number[]).concat(extFlatOffer.floorsOffered || [], extFlatOffer.floorsFlatOffered || []).find((x) => !isNil(x));
+        console.log('YA FLOOR NUMBER', extFlatOffer.floorsOffered, extFlatOffer.floorsFlatOffered);
+        console.log('YA FLOOR NUMBER', floor_number);
 
         //
         const offer: FlatOfferDTO = {
-            data: extFlatOffer,
+            ext_data: extFlatOffer,
             ext_id: path<string>(['offerId'], extFlatOffer)!,
             ext_full_url: 'https:' + path<string>(['unsignedInternalUrl'], extFlatOffer)!,
             rooms_count: path<number | string>(['roomsTotal'], extFlatOffer)!,
-            floor_number, floors_total: path<number | string | null>(['floorsTotal'], extFlatOffer)!,
+            floor_number,
+            floors_total: path<number | string | null>(['floorsTotal'], extFlatOffer)!,
             price, location
         };
         return offer;

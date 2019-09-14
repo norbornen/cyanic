@@ -2,7 +2,7 @@ import pSettle from 'p-settle';
 import { isNil, isEmpty } from 'ramda';
 import ExtSourceModel from '../models/ExtSource';
 import { extFlatOfferProviderFactory } from '../providers/flat_offer';
-import FlatOfferModel, { FlatOffer, FlatOfferDTO } from '../models/Offer';
+import FlatOfferModel, { FlatOffer, FlatOfferDTO } from '../models/ext_entity/offer/FlatOffer';
 
 
 export class ImportUsecase {

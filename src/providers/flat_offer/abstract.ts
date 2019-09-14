@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { Dictionary } from 'ramda';
 import { createHttpAgent } from '../../tools/agent';
 import { ExtSourceConnection } from '../../models/ExtSource';
-import { FlatOfferDTO } from '../../models/Offer';
+import { FlatOfferDTO } from '../../models/ext_entity/offer/FlatOffer';
 
 type CtorArgs = [ExtSourceConnection, any?];
 

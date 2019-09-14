@@ -1,4 +1,4 @@
-import { prop, arrayProp, Ref } from 'typegoose';
+import { prop, arrayProp, Ref, index } from '@hasezoey/typegoose';
 import { CommonModel, CommonModelDTO } from './CommonModel';
 import { NotificationChannel } from './NotificationChannel';
 
@@ -14,6 +14,7 @@ enum ExtSourceProvider {
     thelocals = 'thelocals'
 }
 
+@index({ is_active: 1 })
 class ExtSource extends CommonModel {
     @prop({ required: true })
     public name!: string;

@@ -1,8 +1,8 @@
-import { prop, Ref, index } from 'typegoose';
-import { CommonModel } from '../CommonModel';
+import { prop, Ref, index } from '@hasezoey/typegoose';
+import { CommonModel, CommonModelDTO } from '../CommonModel';
 import { ExtSource } from '../ExtSource';
 
-@index({ source: 1, ext_id: 1 }, { unique: true })
+// @index({ source: 1, ext_id: 1 }, { unique: true })
 abstract class ExtEntity extends CommonModel {
     @prop({ required: true, ref: ExtSource })
     public source!: Ref<ExtSource>;
@@ -15,7 +15,11 @@ abstract class ExtEntity extends CommonModel {
 
     @prop({ select: false })
     public ext_data?: object;
+
+    @prop({ default: false })
+    public is_notifications_send?: boolean;
 }
 
+type ExtEntityDTO<T extends ExtEntity> = Omit<CommonModelDTO<T>, 'source'> & { source?: string };
 
-export { ExtEntity };
+export { ExtEntity, ExtEntityDTO };

@@ -1,4 +1,4 @@
-src/scripts/initial_data.ts
+patches/*
 config/*
 dist/*
 node_modules/*

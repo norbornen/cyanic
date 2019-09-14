@@ -1,10 +1,20 @@
 import { Dictionary } from 'ramda';
-import { prop } from 'typegoose';
+import { prop } from '@hasezoey/typegoose';
 import { CommonModel, CommonModelDTO } from './CommonModel';
 
 
 enum NotificationChannelProvider {
     telegram = 'telegram'
+}
+
+interface NotificationChannelConnectionDummy {
+    dummy: never;
+}
+
+interface NotificationChannelConnectionTelegram {
+    chatId: string;
+    token: string;
+    proxy?: string;
 }
 
 class NotificationChannel extends CommonModel {
@@ -15,7 +25,7 @@ class NotificationChannel extends CommonModel {
     public provider!: NotificationChannelProvider;
 
     @prop({ required: true })
-    public connection!: Dictionary<any>;
+    public connection!: NotificationChannelConnectionDummy | NotificationChannelConnectionTelegram;
 
     @prop()
     public template?: Dictionary<any>;
@@ -26,4 +36,10 @@ const NotificationChannelModel = NotificationChannel.getModelForClass<Notificati
 
 
 export default NotificationChannelModel;
-export { NotificationChannelModel, NotificationChannel, NotificationChannelDTO, NotificationChannelProvider };
+export {
+    NotificationChannelModel,
+    NotificationChannel,
+    NotificationChannelDTO,
+    NotificationChannelProvider,
+    NotificationChannelConnectionTelegram
+};

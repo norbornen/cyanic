@@ -1,7 +1,7 @@
 import { path } from 'ramda';
-import { prop, index, pre } from 'typegoose';
+import { prop, index, pre, InstanceType } from '@hasezoey/typegoose';
 import { CommonModelDTO } from '../../CommonModel';
-import { Offer, Money } from './Offer';
+import { OfferModel, OfferDTO, Offer, Money } from './Offer';
 import { ExtSource } from '../../ExtSource';
 
 interface FlatOfferLocation {
@@ -21,8 +21,6 @@ const oddAddressPartRegexp = /(Россия|г\.?\s?Москва|Москва),\
         location.short_address = location.address.replace(oddAddressPartRegexp, '').replace(/,\s?,/g, ',');
     }
 })
-@index({ source: 1, ext_id: 1 }, { unique: true })
-@index({ is_active: 1, createdAt: 1 })
 class FlatOffer extends Offer {
 
     @prop({ required: true })
@@ -39,11 +37,9 @@ class FlatOffer extends Offer {
 
 }
 
-type FlatOfferDTO = Omit<CommonModelDTO<FlatOffer>, 'source'> & { source?: string };
+type FlatOfferDTO = OfferDTO<FlatOffer>;
+const FlatOfferModel = OfferModel.discriminator<InstanceType<FlatOffer>>('FlatOffer', new FlatOffer().buildSchema(FlatOffer));
 
-// const OfferModel = Offer.getModelForClass<Offer>({ collection: 'offers', discriminatorKey: '_classname' });
-// const FlatOfferModel = OfferModel.discriminator('FlatOfferModel', new FlatOffer().buildSchema<FlatOffer>(FlatOffer));
-const FlatOfferModel = FlatOffer.getModelForClass<FlatOffer>({ collection: 'offers', discriminatorKey: '_classname' });
 
 export default FlatOfferModel;
 export { FlatOfferModel, FlatOffer, FlatOfferDTO, Money };

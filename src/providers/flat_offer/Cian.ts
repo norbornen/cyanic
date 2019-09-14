@@ -1,6 +1,6 @@
 import { Dictionary, path, pathOr, isNil, isEmpty } from 'ramda';
 import { AbstractExtFlatOfferProvider } from './abstract';
-import { FlatOfferDTO, Money } from '../../models/Offer';
+import { FlatOfferDTO, Money } from '../../models/ext_entity/offer/FlatOffer';
 
 interface ISearchFlatOffersResponse {
     data: {
@@ -59,7 +59,7 @@ export default class CianExtFlatOfferProvider extends AbstractExtFlatOfferProvid
 
         //
         const offer: FlatOfferDTO = {
-            data: extFlatOffer,
+            ext_data: extFlatOffer,
             ext_id: (path<string>(['cianId'], extFlatOffer) || path<string>(['id'], extFlatOffer))!,
             ext_full_url: path<string>(['fullUrl'], extFlatOffer)!,
             rooms_count: path<number | string>(['roomsCount'], extFlatOffer)!,

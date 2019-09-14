@@ -25,14 +25,14 @@
     "mongoose": "^5.7.0",
     "p-settle": "^3.1.0",
     "proxy-agent": "^3.1.0",
-    "qs": "^6.5.2",
+    "qs": "^6.8.0",
     "ramda": "^0.26.1",
     "reflect-metadata": "^0.1.13",
-    "telegraf": "^3.24.1",
+    "telegraf": "^3.32.0",
     "ts-money": "^0.4.6",
     "ts-node": "^8.3.0",
-    "tslint": "^5.19.0",
-    "typegoose": "^5.9.0",
+    "tslint": "^5.20.0",
+    "@hasezoey/typegoose": "^5.9.0",
     "typescript": "^3.6.2"
   }
 }

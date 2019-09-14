@@ -3,7 +3,6 @@ import mongoose, { Mongoose, ConnectionOptions } from 'mongoose';
 mongoose.set('debug', process.env.NODE_ENV === 'development');
 const connectionOptions: ConnectionOptions =  {
     useNewUrlParser: true,
-    autoCreate: true,
     useCreateIndex: true,
     useFindAndModify: false,
     useUnifiedTopology: true
