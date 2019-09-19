@@ -44,6 +44,17 @@ export default class CianExtEntityFactory extends AbstractExtEntityFactory {
             floors_total: path<number | string | null>(['building', 'floorsCount'], extFlatOffer)!,
             price, location
         };
+        let ext_updated_at: Date | undefined;
+        if ('creationDate' in extFlatOffer && !isNil(extFlatOffer.creationDate) && !isEmpty(extFlatOffer.creationDate)) {
+            ext_updated_at = new Date(extFlatOffer.creationDate);
+        }
+        if ((!ext_updated_at || isNaN(ext_updated_at.getTime())) && 'addedTimestamp' in extFlatOffer && !isNil(extFlatOffer.addedTimestamp) && /^\d+$/.test(`${extFlatOffer.addedTimestamp}`)) {
+            ext_updated_at = new Date(Number(String(extFlatOffer.addedTimestamp).padEnd(13, '0')));
+        }
+        if (ext_updated_at && !isNaN(ext_updated_at.getTime())) {
+            offer.ext_updated_at = ext_updated_at;
+        }
+
         return new FlatOfferModel(offer);
     }
 }

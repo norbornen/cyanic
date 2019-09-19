@@ -22,7 +22,6 @@ export default class YandexExtEntityFactory extends AbstractExtEntityFactory {
         if (latitude && longitude) {
             location.coordinates = { latitude, longitude };
         }
-
         //
         const floor_number = ([] as number[]).concat(extFlatOffer.floorsOffered || [], extFlatOffer.floorsFlatOffered || []).find((x) => !isNil(x));
 
@@ -36,6 +35,17 @@ export default class YandexExtEntityFactory extends AbstractExtEntityFactory {
             floors_total: path<number | string | null>(['floorsTotal'], extFlatOffer)!,
             price, location
         };
+        let ext_updated_at: Date | undefined;
+        if ('updateDate' in extFlatOffer && !isNil(extFlatOffer.updateDate) && !isEmpty(extFlatOffer.updateDate)) {
+            ext_updated_at = new Date(extFlatOffer.updateDate);
+        }
+        if ((!ext_updated_at || isNaN(ext_updated_at.getTime())) && 'creationDate' in extFlatOffer && !isNil(extFlatOffer.creationDate) && !isEmpty(extFlatOffer.creationDate)) {
+            ext_updated_at = new Date(extFlatOffer.creationDate);
+        }
+        if (ext_updated_at && !isNaN(ext_updated_at.getTime())) {
+            offer.ext_updated_at = ext_updated_at;
+        }
+
         return new FlatOfferModel(offer);
     }
 }

@@ -1,3 +1,4 @@
+import { isNil } from 'ramda';
 import { prop, Ref, instanceMethod, InstanceType } from '@hasezoey/typegoose';
 import { Model } from 'mongoose';
 import { CommonModel, CommonModelDTO } from '../CommonModel';
@@ -16,6 +17,9 @@ abstract class ExtEntity extends CommonModel {
     @prop({ select: false })
     public ext_data?: object;
 
+    @prop()
+    public ext_updated_at?: Date;
+
     @prop({ default: false })
     public is_notifications_send?: boolean;
 
@@ -25,7 +29,7 @@ abstract class ExtEntity extends CommonModel {
         const model: Model<InstanceType<ExtEntity>> = is_instanceof_model ? (this.constructor as never) : this.getModelForClass(this.constructor);
         const data = (this as InstanceType<this>).toObject();
         if (is_instanceof_model) {
-            delete data._id;
+            ['_id', '__v', 'is_notifications_send', 'is_active'].forEach((key) => delete data[key]);
         }
 
         const item = await model.findOneAndUpdate(
@@ -33,6 +37,10 @@ abstract class ExtEntity extends CommonModel {
             data,
             { new: true, upsert: true, setDefaultsOnInsert: true, runValidators: true }
         );
+        if (!('ext_updated_at' in item) || isNil(item.ext_updated_at)) {
+            item.ext_updated_at = new Date();
+            await item.save();
+        }
         Object.assign(this, item);
 
         return this;

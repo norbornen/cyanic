@@ -22,7 +22,6 @@ export default class AvitoExtEntityFactory extends AbstractExtEntityFactory {
         if (latitude && longitude) {
             location.coordinates = { latitude, longitude };
         }
-
         //
         const rooms_count = pathOr<number | string>('-', ['ext', 'rooms'], extFlatOffer);
         const floor_number = pathOr<number | string>('-', ['ext', 'floor'], extFlatOffer);
@@ -36,8 +35,15 @@ export default class AvitoExtEntityFactory extends AbstractExtEntityFactory {
             rooms_count: rooms_count && /^\d+$/.test(rooms_count + '') ? Number(rooms_count) : rooms_count,
             floor_number: floor_number && /^\d+$/.test(floor_number + '') ? Number(floor_number) : floor_number,
             floors_total: floors_total && /^\d+$/.test(floors_total + '') ? Number(floors_total) : floors_total,
-            price, location
+            price, location,
         };
+        if ('time' in extFlatOffer && /^\d+$/.test(`${extFlatOffer.time}`)) {
+            const ext_updated_at = new Date(Number(String(extFlatOffer.time).padEnd(13, '0')));
+            if (ext_updated_at && !isNaN(ext_updated_at.getTime())) {
+                offer.ext_updated_at = ext_updated_at;
+            }
+        }
+
         return new FlatOfferModel(offer);
     }
 }
