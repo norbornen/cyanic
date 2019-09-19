@@ -4,30 +4,21 @@ import { Typegoose, GetModelForClassOptions, prop, staticMethod } from '@hasezoe
 type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getModelForClass' | 'setModelForClass' | 'buildSchema'> &
                             { createdAt?: Date, updatedAt?: Date, is_active?: boolean };
 
-
-export default class CommonModel extends Typegoose {
-    @prop({ select: false })
+export default abstract class CommonModel extends Typegoose {
+    @prop()
     public createdAt!: Date;
 
-    @prop({ select: false })
+    @prop()
     public updatedAt!: Date;
 
     @prop({ default: true })
     public is_active!: boolean;
 
     @staticMethod
-    public static makeInstanse<T>(data?: CommonModelDTO<T>): T {
-        const x = Object.create(this.prototype);
-        if (data) {
-            Object.entries(data).forEach(([k, v]) => x[k] = v);
-        }
-        return x;
-    }
-
-    @staticMethod
     public static getModelForClass<T extends CommonModel>(schemaOptions?: GetModelForClassOptions['schemaOptions']) {
+        const x = Reflect.construct(this, []) as T;
         schemaOptions = Object.assign({timestamps: true}, schemaOptions || {});
-        return this.makeInstanse<T>().getModelForClass(this, { schemaOptions });
+        return x.getModelForClass(this, { schemaOptions });
     }
 }
 

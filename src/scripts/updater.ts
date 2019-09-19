@@ -6,7 +6,7 @@ createConnection({db: 'mongodb://localhost/cyanic'})
 .then(async () => {
     console.info('[updater] ', new Date().toString());
     const usecase = new ImportUsecase();
-    await usecase.getAndUpdateExtFlatOffers();
+    await usecase.getAndUpdateExtEntities();
 
     await disconnect();
     process.exit(0);

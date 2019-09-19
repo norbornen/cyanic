@@ -2,17 +2,19 @@ import { AxiosInstance } from 'axios';
 import { Dictionary } from 'ramda';
 import { createHttpAgent } from '../../tools/agent';
 import { ExtSourceConnection } from '../../models/ExtSource';
-import { FlatOfferDTO } from '../../models/ext_entity/offer/FlatOffer';
+
+type ArrayOfDictionary<T> = Array<Dictionary<T>>;
 
 type CtorArgs = [ExtSourceConnection, any?];
 
-export default abstract class AbstractExtFlatOfferProvider {
-    public baseURL: string;
-    protected readonly default_currency = 'RUR';
+export default abstract class AbstractTransportProvider {
+    public baseURL!: string;
     protected _agent!: AxiosInstance;
 
     constructor(protected connection: ExtSourceConnection, protected params?: any) {
-        this.baseURL = connection.endpoint;
+        if ('endpoint' in connection && connection.endpoint) {
+            this.baseURL = connection.endpoint;
+        }
     }
 
     protected get agent(): AxiosInstance {
@@ -22,8 +24,7 @@ export default abstract class AbstractExtFlatOfferProvider {
         return this._agent;
     }
 
-    public abstract async getExtFlatOffers(): Promise<FlatOfferDTO[]>;
-    public abstract FlatOfferFactory(extFlatOffer: Dictionary<any>): FlatOfferDTO;
+    public abstract async getExtEntities(): Promise<Array<Dictionary<any>>>;
 }
 
-export { AbstractExtFlatOfferProvider, CtorArgs };
+export { AbstractTransportProvider, CtorArgs, ArrayOfDictionary };

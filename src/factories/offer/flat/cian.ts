@@ -1,36 +1,13 @@
+import { InstanceType } from '@hasezoey/typegoose';
 import { Dictionary, path, pathOr, isNil, isEmpty } from 'ramda';
-import { AbstractExtFlatOfferProvider } from './abstract';
-import { FlatOfferDTO, Money } from '../../models/ext_entity/offer/FlatOffer';
+import { AbstractExtEntityFactory } from '../../abstract';
+import { FlatOfferModel, FlatOffer, FlatOfferDTO, Money } from '../../../models/ext_entity/offer/FlatOffer';
 
-interface ISearchFlatOffersResponse {
-    data: {
-        offersSerialized: Array<Dictionary<any>>
-    };
-}
-
-export default class CianExtFlatOfferProvider extends AbstractExtFlatOfferProvider {
-    // constructor(...args: CtorArgs) {
-    //     super(...args);
-    // }
+export default class CianExtEntityFactory extends AbstractExtEntityFactory {
 
     private static EXCLUDE_ADDRESS_ITEM_GEOTYPE: string[] = ['location', 'district', 'underground'];
 
-    public async getExtFlatOffers(): Promise<FlatOfferDTO[]> {
-        const offers: FlatOfferDTO[] = [];
-
-        const { data: { data: { offersSerialized: extFlatOffers } } }: { data: ISearchFlatOffersResponse } =
-            await this.agent.post('/search-offers/v2/search-offers-desktop/', { jsonQuery: this.connection.config });
-        if (extFlatOffers && Array.isArray(extFlatOffers) && extFlatOffers.length > 0) {
-            for (const extFlatOffer of extFlatOffers) {
-                offers.push(this.FlatOfferFactory(extFlatOffer));
-            }
-        }
-
-        console.log(`[cian] offers: ${offers.length}`);
-        return offers;
-    }
-
-    public FlatOfferFactory(extFlatOffer: Dictionary<any>): FlatOfferDTO {
+    public async makeInstanse(extFlatOffer: Dictionary<any>): Promise<InstanceType<FlatOffer>> {
         //
         const amount = path<number>(['bargainTerms', 'price'], extFlatOffer);
         const currency = pathOr<string>(this.default_currency, ['bargainTerms', 'currency'], extFlatOffer).toLocaleUpperCase();
@@ -39,7 +16,7 @@ export default class CianExtFlatOfferProvider extends AbstractExtFlatOfferProvid
         const latitude = path<number>(['geo', 'coordinates', 'lat'], extFlatOffer);
         const longitude = path<number>(['geo', 'coordinates', 'lng'], extFlatOffer);
         const addressShort = pathOr<Array<Dictionary<any>>>([], ['geo', 'address'], extFlatOffer)
-            .filter((x) => x && CianExtFlatOfferProvider.EXCLUDE_ADDRESS_ITEM_GEOTYPE.indexOf(x.geoType) === -1)
+            .filter((x) => x && CianExtEntityFactory.EXCLUDE_ADDRESS_ITEM_GEOTYPE.indexOf(x.geoType) === -1)
             .map((x) => path<string>(['fullName'], x) || path<string>(['name'], x))
             .filter((name) => !(isNil(name) || isEmpty(name)))
             .join(', ')
@@ -67,8 +44,8 @@ export default class CianExtFlatOfferProvider extends AbstractExtFlatOfferProvid
             floors_total: path<number | string | null>(['building', 'floorsCount'], extFlatOffer)!,
             price, location
         };
-        return offer;
+        return new FlatOfferModel(offer);
     }
 }
 
-export { CianExtFlatOfferProvider };
+export { CianExtEntityFactory };

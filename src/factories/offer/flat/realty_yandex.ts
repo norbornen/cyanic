@@ -1,35 +1,11 @@
-import { Dictionary, path, pathOr, isNil } from 'ramda';
-import { AbstractExtFlatOfferProvider } from './abstract';
-import { FlatOfferDTO, Money } from '../../models/ext_entity/offer/FlatOffer';
+import { InstanceType } from '@hasezoey/typegoose';
+import { Dictionary, path, pathOr, isNil, isEmpty } from 'ramda';
+import { AbstractExtEntityFactory } from '../../abstract';
+import { FlatOfferModel, FlatOffer, FlatOfferDTO, Money } from '../../../models/ext_entity/offer/FlatOffer';
 
-interface ISearchFlatOffersResponse {
-    response: {
-        search: {
-            offers: {
-                entities: Array<Dictionary<any>>
-            }
-        }
-    };
-}
+export default class YandexExtEntityFactory extends AbstractExtEntityFactory {
 
-export default class YandexExtFlatOfferProvider extends AbstractExtFlatOfferProvider {
-
-    public async getExtFlatOffers(): Promise<FlatOfferDTO[]> {
-        const offers: FlatOfferDTO[] = [];
-
-        const { data: { response: { search: { offers: { entities: extFlatOffers } } } } }: { data: ISearchFlatOffersResponse } =
-            await this.agent.get('/gate/react-page/get/', { params: this.connection.config });
-        if (extFlatOffers && Array.isArray(extFlatOffers) && extFlatOffers.length > 0) {
-            for (const extFlatOffer of extFlatOffers) {
-                offers.push(this.FlatOfferFactory(extFlatOffer));
-            }
-        }
-
-        console.log(`[yandex] offers: ${offers.length}`);
-        return offers;
-    }
-
-    public FlatOfferFactory(extFlatOffer: Dictionary<any>): FlatOfferDTO {
+    public async makeInstanse(extFlatOffer: Dictionary<any>): Promise<InstanceType<FlatOffer>> {
         //
         const amount = path<number>(['price', 'value'], extFlatOffer);
         const currency = pathOr<string>(this.default_currency, ['price', 'currency'], extFlatOffer).toLocaleUpperCase();
@@ -49,8 +25,6 @@ export default class YandexExtFlatOfferProvider extends AbstractExtFlatOfferProv
 
         //
         const floor_number = ([] as number[]).concat(extFlatOffer.floorsOffered || [], extFlatOffer.floorsFlatOffered || []).find((x) => !isNil(x));
-        console.log('YA FLOOR NUMBER', extFlatOffer.floorsOffered, extFlatOffer.floorsFlatOffered);
-        console.log('YA FLOOR NUMBER', floor_number);
 
         //
         const offer: FlatOfferDTO = {
@@ -62,8 +36,8 @@ export default class YandexExtFlatOfferProvider extends AbstractExtFlatOfferProv
             floors_total: path<number | string | null>(['floorsTotal'], extFlatOffer)!,
             price, location
         };
-        return offer;
+        return new FlatOfferModel(offer);
     }
 }
 
-export { YandexExtFlatOfferProvider };
+export { YandexExtEntityFactory };

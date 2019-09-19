@@ -1,25 +1,71 @@
 import pSettle from 'p-settle';
-import { isNil, isEmpty } from 'ramda';
-import ExtSourceModel from '../models/ExtSource';
-import { extFlatOfferProviderFactory } from '../providers/flat_offer';
-import FlatOfferModel, { FlatOffer, FlatOfferDTO } from '../models/ext_entity/offer/FlatOffer';
-
+import { path, isNil, isEmpty, Dictionary } from 'ramda';
+import { InstanceType } from '@hasezoey/typegoose';
+import ExtSourceModel, { ExtSource } from '../models/ExtSource';
+import { ExtEntity } from '../models/ext_entity/ExtEntity';
+import { transportProviderFactory } from '../providers/transport';
+import { extEntityFactoryProvider } from '../factories';
+import { pipesFactory } from '../pipes';
 
 export class ImportUsecase {
 
-    public async getExtFlatOffers(): Promise<FlatOfferDTO[]> {
+    public async getExtEntitiesByExtSource(extSource: InstanceType<ExtSource>): Promise<Array<InstanceType<ExtEntity>>> {
+        const provider = transportProviderFactory(extSource);
+
+        const raw_entities: Array<Dictionary<any> | null> = await provider.getExtEntities();
+
+        // apply pipes_before
+        if ('pipes_before' in extSource && extSource.pipes_before) {
+            for (const [idx, raw_entity] of raw_entities.entries()) {
+                if (raw_entity) {
+                    try {
+                        const pipesResult = (await pSettle(
+                                    extSource.pipes_before.map((pipe) => pipesFactory(pipe).then((p) => p.apply(raw_entity)))
+                                )).reduce((acc, x) => {
+                                    if (x.isFulfilled && !isNil(x.value) && !isEmpty(x.value)) {
+                                        acc = acc && x.value;
+                                    }
+                                    if (x.isRejected) {
+                                        console.error(x.reason);
+                                    }
+                                    return acc;
+                                }, true);
+                        if (pipesResult === false) {
+                            raw_entities[idx] = null;
+                        }
+                    } catch (err) {
+                        console.error(err);
+                    }
+                }
+            }
+        }
+
+        const extEntities: Array<InstanceType<ExtEntity>> = [];
+        const factory = await extEntityFactoryProvider(extSource);
+        for (const raw_entity of raw_entities) {
+            if (!(isNil(raw_entity) || isEmpty(raw_entity))) {
+                try {
+                    const entity = await factory.makeInstanse(raw_entity!);
+                    entity.source = extSource._id;
+                    extEntities.push(entity);
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+        }
+
+        console.log(`[${extSource.name}]    entities: ${extEntities.length}`);
+        return extEntities;
+    }
+
+    public async getExtEntities(): Promise<Array<InstanceType<ExtEntity>>> {
         const extSources = await ExtSourceModel.find({ is_active: true });
 
         const importResults = await pSettle(
-            extSources.map(async (extSource): Promise<FlatOfferDTO[]> => {
-                const provider = extFlatOfferProviderFactory(extSource);
-                const offers = await provider.getExtFlatOffers();
-                offers.forEach((offer) => offer.source = extSource.id);
-                return offers;
-            })
+            extSources.map((extSource) => this.getExtEntitiesByExtSource(extSource))
         );
 
-        const extFlatOffers = importResults
+        const extEntities = importResults
             .reduce((acc, x) => {
                 if (x.isRejected) {
                     console.error(x.reason);
@@ -28,30 +74,28 @@ export class ImportUsecase {
                     acc = acc.concat(x.value);
                 }
                 return acc;
-            }, [] as FlatOfferDTO[])
-            .filter((extFlatOffer) => !(isNil(extFlatOffer) || isEmpty(extFlatOffer)));
+            }, [] as Array<InstanceType<ExtEntity>>)
+            .filter((entity) => !(isNil(entity) || isEmpty(entity)));
 
-        return extFlatOffers;
+        return extEntities;
     }
 
-    public async updateExtFlatOffers(extFlatOffers: FlatOfferDTO[]): Promise<FlatOffer[]> {
-        const offers: FlatOffer[] = [];
-        if (extFlatOffers && extFlatOffers.length > 0) {
-            for (const extFlatOffer of extFlatOffers) {
-                const offer = await FlatOfferModel.findOneAndUpdate(
-                    { ext_id: extFlatOffer.ext_id, source: extFlatOffer.source },
-                    extFlatOffer,
-                    { new: true, upsert: true, setDefaultsOnInsert: true }
-                );
-                offers.push(offer!);
+    public async updateExtEntities(extEntities: Array<InstanceType<ExtEntity>>): Promise<Array<InstanceType<ExtEntity>>> {
+        const entities = [];
+        for (const entity of extEntities) {
+            try {
+                const item = await entity.upsert();
+                entities.push(item);
+            } catch (err) {
+                console.error(err);
             }
         }
-        return offers;
+        return entities;
     }
 
-    public async getAndUpdateExtFlatOffers(): Promise<FlatOffer[]> {
-        const extFlatOffers = await this.getExtFlatOffers();
-        return this.updateExtFlatOffers(extFlatOffers);
+    public async getAndUpdateExtEntities(): Promise<Array<InstanceType<ExtEntity>>> {
+        const extEntities = await this.getExtEntities();
+        return this.updateExtEntities(extEntities);
     }
 
 }

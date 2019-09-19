@@ -1,8 +1,7 @@
-import { path } from 'ramda';
-import { prop, index, pre, InstanceType } from '@hasezoey/typegoose';
-import { CommonModelDTO } from '../../CommonModel';
+import { path, Dictionary } from 'ramda';
+import { prop, pre, InstanceType } from '@hasezoey/typegoose';
+import { models as typegooseModels } from '@hasezoey/typegoose/lib/data';
 import { OfferModel, OfferDTO, Offer, Money } from './Offer';
-import { ExtSource } from '../../ExtSource';
 
 interface FlatOfferLocation {
     address: string;
@@ -34,12 +33,15 @@ class FlatOffer extends Offer {
 
     @prop({ required: true })
     public location!: FlatOfferLocation;
-
 }
 
 type FlatOfferDTO = OfferDTO<FlatOffer>;
 const FlatOfferModel = OfferModel.discriminator<InstanceType<FlatOffer>>('FlatOffer', new FlatOffer().buildSchema(FlatOffer));
 
+/**
+ * hack: register model in the internal typegoose storage
+ */
+(typegooseModels as Dictionary<any>)['FlatOffer'] = FlatOfferModel;
 
 export default FlatOfferModel;
 export { FlatOfferModel, FlatOffer, FlatOfferDTO, Money };
