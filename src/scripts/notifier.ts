@@ -2,17 +2,24 @@
 import createConnection, { disconnect } from '../mongooseConnect';
 import { NotificationUsecase } from '../usecases/NotificationUsecase';
 
-createConnection({db: 'mongodb://localhost/cyanic'})
-.then(async () => {
-    console.info('[notifier] ', new Date().toString());
-    const usecase = new NotificationUsecase();
-    await usecase.sendNotifications();
+enum ExtCode {'OK', 'FAIL'}
 
-    await disconnect();
-    process.exit(0);
-})
-.catch(async (err) => {
-    console.error(err);
-    await disconnect();
-    process.exit(1);
-});
+(async () => {
+    let extcode: ExtCode = ExtCode.OK;
+    let connection;
+    try {
+        connection = await createConnection({db: 'mongodb://localhost/cyanic'});
+
+        console.info('[notifier] ', new Date().toString());
+        const usecase = new NotificationUsecase();
+        await usecase.sendNotifications();
+    } catch (err) {
+        console.error(err);
+        extcode = ExtCode.FAIL;
+    }
+
+    if (connection) {
+        await disconnect();
+    }
+    process.exit(extcode);
+})();
