@@ -18,6 +18,9 @@ class ExtSource extends CommonModel {
     @prop({ required: true })
     public name!: string;
 
+    @prop()
+    public alias?: string;
+
     @prop({ enum: ExtSourceTransport, required: true })
     public transport!: ExtSourceTransport;
 
