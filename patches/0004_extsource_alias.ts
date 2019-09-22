@@ -21,19 +21,19 @@ async function run() {
     for (const extSource of extSources) {
         switch (extSource.transport) {
             case ExtSourceTransport.cian:
-                extSource.alias = 'flat_offer_np_cian';
+                extSource.alias = 'cian_flat_offer_np';
                 await extSource.save();
                 break;
             case ExtSourceTransport.realty_yandex:
-                extSource.alias = 'flat_offer_np_realty_yandex';
+                extSource.alias = 'yandex_flat_offer_np_realty';
                 await extSource.save();
                 break;
             case ExtSourceTransport.avito:
-                extSource.alias = 'flat_offer_np_avito';
+                extSource.alias = 'avito_flat_offer_np';
                 await extSource.save();
                 break;
             case ExtSourceTransport.thelocals:
-                extSource.alias = 'flat_offer_np_thelocals';
+                extSource.alias = 'thelocals_flat_offer_np';
                 await extSource.save();
                 break;
             default:
