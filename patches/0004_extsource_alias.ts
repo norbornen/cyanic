@@ -22,23 +22,20 @@ async function run() {
         switch (extSource.transport) {
             case ExtSourceTransport.cian:
                 extSource.alias = 'cian_flat_offer_np';
-                await extSource.save();
                 break;
             case ExtSourceTransport.realty_yandex:
                 extSource.alias = 'yandex_flat_offer_np_realty';
-                await extSource.save();
                 break;
             case ExtSourceTransport.avito:
                 extSource.alias = 'avito_flat_offer_np';
-                await extSource.save();
                 break;
             case ExtSourceTransport.thelocals:
                 extSource.alias = 'thelocals_flat_offer_np';
-                await extSource.save();
                 break;
             default:
                 throw new Error('UNKNOWN_TRANSPORT');
         }
+        await extSource.save();
     }
 
     console.log(extSources.length);
