@@ -1,9 +1,18 @@
-import { Typegoose, GetModelForClassOptions, prop, staticMethod } from '@hasezoey/typegoose';
+import { Typegoose, prop, staticMethod, pre, GetModelForClassOptions, InstanceType } from '@hasezoey/typegoose';
 
 
 type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getModelForClass' | 'setModelForClass' | 'buildSchema'> &
                             { createdAt?: Date, updatedAt?: Date, is_active?: boolean };
 
+
+@pre<CommonModel>('save', function(next) {
+    try {
+        (this as InstanceType<CommonModel>).increment();
+    } catch (err) {
+        console.error('CommonModel::preSave ', err);
+    }
+    return next();
+})
 export default abstract class CommonModel extends Typegoose {
     @prop()
     public createdAt!: Date;
