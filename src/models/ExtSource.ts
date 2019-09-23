@@ -14,6 +14,7 @@ enum ExtSourceTransport {
 }
 
 @index({ is_active: 1 })
+@index({ alias: 1 })
 class ExtSource extends CommonModel {
     @prop({ required: true })
     public name!: string;
