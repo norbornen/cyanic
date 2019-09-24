@@ -18,15 +18,19 @@ interface NotificationChannelConnectionTelegram {
 }
 
 class NotificationChannel extends CommonModel {
+    // название для показа
     @prop()
     public name?: string;
 
+    // провайдер
     @prop({ enum: NotificationChannelProvider, required: true })
     public provider!: NotificationChannelProvider;
 
+    // настройки соединения
     @prop({ required: true })
     public connection!: NotificationChannelConnectionDummy | NotificationChannelConnectionTelegram;
 
+    // шаблон сообщения
     @prop()
     public template?: Dictionary<any>;
 }

@@ -5,21 +5,27 @@ import { CommonModel, CommonModelDTO } from '../CommonModel';
 import { ExtSource } from '../ExtSource';
 
 abstract class ExtEntity extends CommonModel {
+    // внешний источник
     @prop({ required: true, ref: ExtSource })
     public source!: Ref<ExtSource>;
 
+    // идентификатор во внешнем источнике
     @prop({ required: true, index: true })
     public ext_id!: string;
 
+    // адрес web-страницы на сайте внешнего источника
     @prop({ required: true, trim: true })
     public ext_full_url!: string;
 
+    // хранилище необработанных данных полученных из внешнего источника
     @prop({ select: false })
     public ext_data?: object;
 
+    // дата последнего обновления записи во внешнем источнике
     @prop()
     public ext_updated_at?: Date;
 
+    // были ли разосланы уведомления
     @prop({ default: false })
     public is_notifications_send?: boolean;
 
