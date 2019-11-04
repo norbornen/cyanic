@@ -1,6 +1,6 @@
 {
   "name": "cyanic-ts",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "bin": {
     "cyanic-updater": "./dist/scripts/updater.js",
@@ -15,6 +15,7 @@
     "build": "rm -rf dist && tsc --strict && chmod +x dist/scripts/updater.js dist/scripts/notifier.js"
   },
   "dependencies": {
+    "@typegoose/typegoose": "^6.0.4",
     "@types/ejs": "^2.6.3",
     "@types/mongoose": "^5.5.28",
     "@types/node": "^12.12.5",
@@ -32,7 +33,6 @@
     "ts-money": "^0.4.6",
     "ts-node": "^8.4.1",
     "tslint": "^5.20.0",
-    "@hasezoey/typegoose": "^5.9.2",
     "typescript": "^3.6.4"
   }
 }
