@@ -1,5 +1,4 @@
-import { Typegoose, prop, staticMethod, pre, GetModelForClassOptions, DocumentType } from '@typegoose/typegoose';
-
+import { prop, pre, modelOptions, DocumentType } from '@typegoose/typegoose';
 
 type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getModelForClass' | 'setModelForClass' | 'buildSchema'> &
                             { createdAt?: Date, updatedAt?: Date, is_active?: boolean };
@@ -13,7 +12,10 @@ type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getM
     }
     return next();
 })
-export default abstract class CommonModel extends Typegoose {
+@modelOptions({
+    schemaOptions: { timestamps: true }
+})
+export default abstract class CommonModel {
     @prop()
     public createdAt!: Date;
 
@@ -23,12 +25,13 @@ export default abstract class CommonModel extends Typegoose {
     @prop({ default: true })
     public is_active!: boolean;
 
-    @staticMethod
-    public static getModelForClass<T extends CommonModel>(schemaOptions?: GetModelForClassOptions['schemaOptions']) {
-        const x = Reflect.construct(this, []) as T;
-        schemaOptions = Object.assign({timestamps: true}, schemaOptions || {});
-        return x.getModelForClass(this, { schemaOptions });
-    }
+    // @staticMethod
+    // // public static getModelForClass<T extends CommonModel>(schemaOptions?: GetModelForClassOptions['schemaOptions']) {
+    // public static getModelForClass<T extends CommonModel>(schemaOptions?: IModelOptions) {
+    //     const x = Reflect.construct(this, []) as T;
+    //     schemaOptions = Object.assign({timestamps: true}, schemaOptions || {});
+    //     return x.getModelForClass(this, { schemaOptions });
+    // }
 }
 
 export { CommonModel, CommonModelDTO };

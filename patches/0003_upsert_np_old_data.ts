@@ -1,7 +1,7 @@
 // tslint:disable:prefer-const
 import { Dictionary, isNil, isEmpty } from 'ramda';
 import createConnection, { disconnect } from '../src/mongooseConnect';
-import { InstanceType } from '@typegoose/typegoose';
+import { DocumentType } from '@typegoose/typegoose';
 import { ExtSourceModel, ExtSource, ExtSourceTransport } from '../src/models/ExtSource';
 import { FlatOfferModel, FlatOfferDTO, Money } from '../src/models/ext_entity/offer/FlatOffer';
 const history: Array<Dictionary<any>> = require('./hist');
@@ -109,7 +109,7 @@ async function getOffersDTO() {
 
 async function getExtSources() {
     const extSources = await ExtSourceModel.find({});
-    const map = new Map<ExtSourceTransport, InstanceType<ExtSource>>();
+    const map = new Map<ExtSourceTransport, DocumentType<ExtSource>>();
     extSources.forEach((extSource) => map.set(extSource.transport, extSource));
     return map;
 }

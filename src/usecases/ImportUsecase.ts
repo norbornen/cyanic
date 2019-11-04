@@ -81,7 +81,7 @@ export class ImportUsecase {
     }
 
     public async updateExtEntities(extEntities: Array<DocumentType<ExtEntity>>): Promise<Array<DocumentType<ExtEntity>>> {
-        const entities = [];
+        const entities: Array<DocumentType<ExtEntity>> = [];
         for (const entity of extEntities) {
             try {
                 const item = await entity.upsert();

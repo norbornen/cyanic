@@ -1,5 +1,5 @@
 import { Dictionary } from 'ramda';
-import { prop } from '@typegoose/typegoose';
+import { prop, getModelForClass } from '@typegoose/typegoose';
 import { CommonModel, CommonModelDTO } from './CommonModel';
 
 
@@ -19,7 +19,7 @@ interface NotificationChannelConnectionTelegram {
 
 class NotificationChannel extends CommonModel {
     // название для показа
-    @prop()
+    @prop({ trim: true })
     public name?: string;
 
     // провайдер
@@ -36,7 +36,7 @@ class NotificationChannel extends CommonModel {
 }
 
 type NotificationChannelDTO = CommonModelDTO<NotificationChannel>;
-const NotificationChannelModel = NotificationChannel.getModelForClass<NotificationChannel>();
+const NotificationChannelModel = getModelForClass(NotificationChannel);
 
 
 export default NotificationChannelModel;

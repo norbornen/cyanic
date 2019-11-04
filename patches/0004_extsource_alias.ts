@@ -1,6 +1,6 @@
 // tslint:disable:prefer-const
 import createConnection, { disconnect } from '../src/mongooseConnect';
-import { InstanceType } from '@typegoose/typegoose';
+import { DocumentType } from '@typegoose/typegoose';
 import { ExtSourceModel, ExtSource, ExtSourceTransport } from '../src/models/ExtSource';
 
 createConnection({db: 'mongodb://localhost/cyanic'})

@@ -1,4 +1,4 @@
-import { prop, arrayProp, Ref, index } from '@typegoose/typegoose';
+import { prop, arrayProp, Ref, index, getModelForClass } from '@typegoose/typegoose';
 import { CommonModel, CommonModelDTO } from './CommonModel';
 import { NotificationChannel } from './NotificationChannel';
 
@@ -17,11 +17,11 @@ enum ExtSourceTransport {
 @index({ alias: 1 })
 class ExtSource extends CommonModel {
     // название для показа
-    @prop({ required: true })
+    @prop({ required: true, trim: true })
     public name!: string;
 
     // название для программного использования
-    @prop()
+    @prop({ trim: true })
     public alias?: string;
 
     // транспорт
@@ -50,7 +50,7 @@ class ExtSource extends CommonModel {
 }
 
 type ExtSourceDTO = CommonModelDTO<ExtSource>;
-const ExtSourceModel = ExtSource.getModelForClass<ExtSource>();
+const ExtSourceModel = getModelForClass(ExtSource);
 
 export default ExtSourceModel;
 export { ExtSourceModel, ExtSource, ExtSourceDTO, ExtSourceTransport, ExtSourceConnection };

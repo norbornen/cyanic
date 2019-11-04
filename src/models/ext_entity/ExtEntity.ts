@@ -1,8 +1,9 @@
 import { isNil } from 'ramda';
-import { prop, Ref, instanceMethod, DocumentType } from '@typegoose/typegoose';
+import { prop, Ref, DocumentType, getModelForClass, getClassForDocument } from '@typegoose/typegoose';
 import { Model } from 'mongoose';
 import { CommonModel, CommonModelDTO } from '../CommonModel';
 import { ExtSource } from '../ExtSource';
+import { AnyParamConstructor } from '@typegoose/typegoose/lib/types';
 
 abstract class ExtEntity extends CommonModel {
     // внешний источник
@@ -29,14 +30,14 @@ abstract class ExtEntity extends CommonModel {
     @prop({ default: false })
     public is_notifications_send?: boolean;
 
-    @instanceMethod
     public async upsert(): Promise<this> {
         const is_instanceof_model = this instanceof Model;
-        const model: Model<DocumentType<ExtEntity>> = is_instanceof_model ? (this.constructor as never) : this.getModelForClass(this.constructor);
+        const ctor = getClassForDocument(this as DocumentType<this>)! as AnyParamConstructor<this>;
+        const model = getModelForClass(ctor);
+
         const data = (this as DocumentType<this>).toObject();
-        if (is_instanceof_model) {
-            ['_id', '__v', 'is_notifications_send', 'is_active'].forEach((key) => delete data[key]);
-        }
+        ['_id', '__v', 'is_notifications_send', 'is_active'].forEach((key) => delete data[key]);
+
 
         const item = await model.findOneAndUpdate(
             { ext_id: data.ext_id, source: data.source },

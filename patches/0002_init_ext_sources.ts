@@ -1,5 +1,5 @@
 import createConnection, { disconnect } from '../src/mongooseConnect';
-import { InstanceType } from '@typegoose/typegoose';
+import { DocumentType } from '@typegoose/typegoose';
 import ExtSourceModel, { ExtSource, ExtSourceTransport, ExtSourceDTO } from '../src/models/ExtSource';
 import OfferModel from '../src/models/ext_entity/offer/Offer';
 import NotificationChannelModel, { NotificationChannel } from '../src/models/NotificationChannel';
@@ -30,7 +30,7 @@ async function initExtsources() {
     ]);
 }
 
-async function esCian(notification_channels: Array<InstanceType<NotificationChannel>>): Promise<ExtSource> {
+async function esCian(notification_channels: Array<DocumentType<NotificationChannel>>): Promise<ExtSource> {
     return ExtSourceModel.create({
         is_active: false,
         name: 'ЦИАН',
@@ -84,7 +84,7 @@ async function esCian(notification_channels: Array<InstanceType<NotificationChan
     } as ExtSourceDTO);
 }
 
-async function esYandex(notification_channels: Array<InstanceType<NotificationChannel>>): Promise<ExtSource> {
+async function esYandex(notification_channels: Array<DocumentType<NotificationChannel>>): Promise<ExtSource> {
     return ExtSourceModel.create({
         is_active: false,
         name: 'Яндекс.Недвижимость',
@@ -115,7 +115,7 @@ async function esYandex(notification_channels: Array<InstanceType<NotificationCh
     } as ExtSourceDTO);
 }
 
-async function esAvito(notification_channels: Array<InstanceType<NotificationChannel>>): Promise<ExtSource> {
+async function esAvito(notification_channels: Array<DocumentType<NotificationChannel>>): Promise<ExtSource> {
     return ExtSourceModel.create({
         is_active: false,
         name: 'Avito',
@@ -145,7 +145,7 @@ async function esAvito(notification_channels: Array<InstanceType<NotificationCha
     } as ExtSourceDTO);
 }
 
-async function esTheLocals(notification_channels: Array<InstanceType<NotificationChannel>>): Promise<ExtSource> {
+async function esTheLocals(notification_channels: Array<DocumentType<NotificationChannel>>): Promise<ExtSource> {
     return ExtSourceModel.create({
         is_active: true,
         name: 'Локалс',
