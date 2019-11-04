@@ -1,4 +1,4 @@
-import { InstanceType } from '@hasezoey/typegoose';
+import { InstanceType } from '@typegoose/typegoose';
 import { AxiosInstance } from 'axios';
 import { Dictionary } from 'ramda';
 import { createHttpAgent } from '../tools/agent';

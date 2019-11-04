@@ -1,4 +1,4 @@
-import { Typegoose, prop, staticMethod, pre, GetModelForClassOptions, InstanceType } from '@hasezoey/typegoose';
+import { Typegoose, prop, staticMethod, pre, GetModelForClassOptions, InstanceType } from '@typegoose/typegoose';
 
 
 type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getModelForClass' | 'setModelForClass' | 'buildSchema'> &

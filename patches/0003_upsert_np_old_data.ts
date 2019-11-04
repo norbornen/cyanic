@@ -1,7 +1,7 @@
 // tslint:disable:prefer-const
 import { Dictionary, isNil, isEmpty } from 'ramda';
 import createConnection, { disconnect } from '../src/mongooseConnect';
-import { InstanceType } from '@hasezoey/typegoose';
+import { InstanceType } from '@typegoose/typegoose';
 import { ExtSourceModel, ExtSource, ExtSourceTransport } from '../src/models/ExtSource';
 import { FlatOfferModel, FlatOfferDTO, Money } from '../src/models/ext_entity/offer/FlatOffer';
 const history: Array<Dictionary<any>> = require('./hist');

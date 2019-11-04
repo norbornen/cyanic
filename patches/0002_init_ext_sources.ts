@@ -1,5 +1,5 @@
 import createConnection, { disconnect } from '../src/mongooseConnect';
-import { InstanceType } from '@hasezoey/typegoose';
+import { InstanceType } from '@typegoose/typegoose';
 import ExtSourceModel, { ExtSource, ExtSourceTransport, ExtSourceDTO } from '../src/models/ExtSource';
 import OfferModel from '../src/models/ext_entity/offer/Offer';
 import NotificationChannelModel, { NotificationChannel } from '../src/models/NotificationChannel';

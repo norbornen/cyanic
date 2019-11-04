@@ -1,5 +1,5 @@
 import { isNil } from 'ramda';
-import { prop, Ref, instanceMethod, InstanceType } from '@hasezoey/typegoose';
+import { prop, Ref, instanceMethod, InstanceType } from '@typegoose/typegoose';
 import { Model } from 'mongoose';
 import { CommonModel, CommonModelDTO } from '../CommonModel';
 import { ExtSource } from '../ExtSource';

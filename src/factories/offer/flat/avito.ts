@@ -1,4 +1,4 @@
-import { InstanceType } from '@hasezoey/typegoose';
+import { InstanceType } from '@typegoose/typegoose';
 import { Dictionary, path, pathOr, isNil, isEmpty } from 'ramda';
 import { AbstractExtEntityFactory } from '../../abstract';
 import { FlatOfferModel, FlatOffer, FlatOfferDTO, Money } from '../../../models/ext_entity/offer/FlatOffer';

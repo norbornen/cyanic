@@ -1,5 +1,5 @@
 import { Dictionary } from 'ramda';
-import { prop } from '@hasezoey/typegoose';
+import { prop } from '@typegoose/typegoose';
 import { CommonModel, CommonModelDTO } from './CommonModel';
 
 

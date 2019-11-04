@@ -1,6 +1,6 @@
 import { path, Dictionary } from 'ramda';
-import { prop, pre, InstanceType } from '@hasezoey/typegoose';
-import { models as typegooseModels } from '@hasezoey/typegoose/lib/data';
+import { prop, pre, InstanceType } from '@typegoose/typegoose';
+import { models as typegooseModels } from '@typegoose/typegoose/lib/data';
 import { OfferModel, OfferDTO, Offer, Money } from './Offer';
 
 interface FlatOfferLocation {

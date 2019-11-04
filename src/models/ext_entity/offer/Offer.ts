@@ -1,4 +1,4 @@
-import { prop, index } from '@hasezoey/typegoose';
+import { prop, index } from '@typegoose/typegoose';
 import { Money } from '../../../tools/money';
 import { ExtEntity, ExtEntityDTO } from '../ExtEntity';
 

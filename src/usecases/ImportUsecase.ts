@@ -1,6 +1,6 @@
 import pSettle from 'p-settle';
 import { path, isNil, isEmpty, Dictionary } from 'ramda';
-import { InstanceType } from '@hasezoey/typegoose';
+import { InstanceType } from '@typegoose/typegoose';
 import ExtSourceModel, { ExtSource } from '../models/ExtSource';
 import { ExtEntity } from '../models/ext_entity/ExtEntity';
 import { transportProviderFactory } from '../providers/transport';

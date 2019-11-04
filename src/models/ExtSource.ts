@@ -1,4 +1,4 @@
-import { prop, arrayProp, Ref, index } from '@hasezoey/typegoose';
+import { prop, arrayProp, Ref, index } from '@typegoose/typegoose';
 import { CommonModel, CommonModelDTO } from './CommonModel';
 import { NotificationChannel } from './NotificationChannel';
 
