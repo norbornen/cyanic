@@ -1,4 +1,4 @@
-import { InstanceType } from '@typegoose/typegoose';
+import { DocumentType } from '@typegoose/typegoose';
 import { Dictionary, path, pathOr, isNil, isEmpty } from 'ramda';
 import { AbstractExtEntityFactory } from '../../abstract';
 import { FlatOfferModel, FlatOffer, FlatOfferDTO, Money } from '../../../models/ext_entity/offer/FlatOffer';
@@ -7,7 +7,7 @@ export default class CianExtEntityFactory extends AbstractExtEntityFactory {
 
     private static EXCLUDE_ADDRESS_ITEM_GEOTYPE: string[] = ['location', 'district', 'underground'];
 
-    public async makeInstanse(extFlatOffer: Dictionary<any>): Promise<InstanceType<FlatOffer>> {
+    public async makeInstanse(extFlatOffer: Dictionary<any>): Promise<DocumentType<FlatOffer>> {
         //
         const amount = path<number>(['bargainTerms', 'price'], extFlatOffer);
         const currency = pathOr<string>(this.default_currency, ['bargainTerms', 'currency'], extFlatOffer).toLocaleUpperCase();

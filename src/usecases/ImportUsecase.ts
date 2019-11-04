@@ -1,6 +1,6 @@
 import pSettle from 'p-settle';
 import { path, isNil, isEmpty, Dictionary } from 'ramda';
-import { InstanceType } from '@typegoose/typegoose';
+import { DocumentType } from '@typegoose/typegoose';
 import ExtSourceModel, { ExtSource } from '../models/ExtSource';
 import { ExtEntity } from '../models/ext_entity/ExtEntity';
 import { transportProviderFactory } from '../providers/transport';
@@ -9,7 +9,7 @@ import { pipesFactory } from '../pipes';
 
 export class ImportUsecase {
 
-    public async getExtEntitiesByExtSource(extSource: InstanceType<ExtSource>): Promise<Array<InstanceType<ExtEntity>>> {
+    public async getExtEntitiesByExtSource(extSource: DocumentType<ExtSource>): Promise<Array<DocumentType<ExtEntity>>> {
         const provider = transportProviderFactory(extSource);
 
         const raw_entities: Array<Dictionary<any> | null> = await provider.getExtEntities();
@@ -40,7 +40,7 @@ export class ImportUsecase {
             }
         }
 
-        const extEntities: Array<InstanceType<ExtEntity>> = [];
+        const extEntities: Array<DocumentType<ExtEntity>> = [];
         const factory = await extEntityFactoryProvider(extSource);
         for (const raw_entity of raw_entities) {
             if (!(isNil(raw_entity) || isEmpty(raw_entity))) {
@@ -58,7 +58,7 @@ export class ImportUsecase {
         return extEntities;
     }
 
-    public async getExtEntities(): Promise<Array<InstanceType<ExtEntity>>> {
+    public async getExtEntities(): Promise<Array<DocumentType<ExtEntity>>> {
         const extSources = await ExtSourceModel.find({ is_active: true });
 
         const importResults = await pSettle(
@@ -74,13 +74,13 @@ export class ImportUsecase {
                     acc = acc.concat(x.value);
                 }
                 return acc;
-            }, [] as Array<InstanceType<ExtEntity>>)
+            }, [] as Array<DocumentType<ExtEntity>>)
             .filter((entity) => !(isNil(entity) || isEmpty(entity)));
 
         return extEntities;
     }
 
-    public async updateExtEntities(extEntities: Array<InstanceType<ExtEntity>>): Promise<Array<InstanceType<ExtEntity>>> {
+    public async updateExtEntities(extEntities: Array<DocumentType<ExtEntity>>): Promise<Array<DocumentType<ExtEntity>>> {
         const entities = [];
         for (const entity of extEntities) {
             try {
@@ -93,7 +93,7 @@ export class ImportUsecase {
         return entities;
     }
 
-    public async getAndUpdateExtEntities(): Promise<Array<InstanceType<ExtEntity>>> {
+    public async getAndUpdateExtEntities(): Promise<Array<DocumentType<ExtEntity>>> {
         const extEntities = await this.getExtEntities();
         return this.updateExtEntities(extEntities);
     }

@@ -1,11 +1,11 @@
-import { InstanceType } from '@typegoose/typegoose';
+import { DocumentType } from '@typegoose/typegoose';
 import { Dictionary, path, pathOr, isNil, isEmpty } from 'ramda';
 import { AbstractExtEntityFactory } from '../../abstract';
 import { FlatOfferModel, FlatOffer, FlatOfferDTO, Money } from '../../../models/ext_entity/offer/FlatOffer';
 
 export default class YandexExtEntityFactory extends AbstractExtEntityFactory {
 
-    public async makeInstanse(extFlatOffer: Dictionary<any>): Promise<InstanceType<FlatOffer>> {
+    public async makeInstanse(extFlatOffer: Dictionary<any>): Promise<DocumentType<FlatOffer>> {
         //
         const amount = path<number>(['price', 'value'], extFlatOffer);
         const currency = pathOr<string>(this.default_currency, ['price', 'currency'], extFlatOffer).toLocaleUpperCase();

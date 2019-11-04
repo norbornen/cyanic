@@ -1,4 +1,4 @@
-import { InstanceType } from '@typegoose/typegoose';
+import { DocumentType } from '@typegoose/typegoose';
 import { Dictionary, path, pathOr, isNil, isEmpty } from 'ramda';
 import { AbstractExtEntityFactory } from '../../abstract';
 import { FlatOfferModel, FlatOffer, FlatOfferDTO, Money } from '../../../models/ext_entity/offer/FlatOffer';
@@ -6,7 +6,7 @@ import { FlatOfferModel, FlatOffer, FlatOfferDTO, Money } from '../../../models/
 export default class LocalsExtEntityFactory extends AbstractExtEntityFactory {
     public baseURL: string = 'https://thelocals.ru';
 
-    public async makeInstanse(extFlatOffer: Dictionary<any>): Promise<InstanceType<FlatOffer>> {
+    public async makeInstanse(extFlatOffer: Dictionary<any>): Promise<DocumentType<FlatOffer>> {
         //
         const amount = Number(String(pathOr<string>('', ['price'], extFlatOffer)).replace(/[^\d]/g, ''));
         const currency = pathOr<string>(this.default_currency, ['price_currency_code'], extFlatOffer).toLocaleUpperCase();

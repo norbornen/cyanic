@@ -1,5 +1,5 @@
 import { path, Dictionary } from 'ramda';
-import { prop, pre, InstanceType } from '@typegoose/typegoose';
+import { prop, pre, DocumentType } from '@typegoose/typegoose';
 import { models as typegooseModels } from '@typegoose/typegoose/lib/data';
 import { OfferModel, OfferDTO, Offer, Money } from './Offer';
 
@@ -36,7 +36,7 @@ class FlatOffer extends Offer {
 }
 
 type FlatOfferDTO = OfferDTO<FlatOffer>;
-const FlatOfferModel = OfferModel.discriminator<InstanceType<FlatOffer>>('FlatOffer', new FlatOffer().buildSchema(FlatOffer));
+const FlatOfferModel = OfferModel.discriminator<DocumentType<FlatOffer>>('FlatOffer', new FlatOffer().buildSchema(FlatOffer));
 
 /**
  * hack: register model in the internal typegoose storage

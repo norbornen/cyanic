@@ -1,4 +1,4 @@
-import { InstanceType } from '@typegoose/typegoose';
+import { DocumentType } from '@typegoose/typegoose';
 import { AxiosInstance } from 'axios';
 import { Dictionary } from 'ramda';
 import { createHttpAgent } from '../tools/agent';
@@ -23,7 +23,7 @@ export default class AbstractExtEntityFactory {
         return this._agent;
     }
 
-    public async makeInstanse(data: Dictionary<any>): Promise<InstanceType<ExtEntity>> {
+    public async makeInstanse(data: Dictionary<any>): Promise<DocumentType<ExtEntity>> {
         throw new Error('call abstract class method');
     }
 }

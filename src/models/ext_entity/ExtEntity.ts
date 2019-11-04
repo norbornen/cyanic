@@ -1,5 +1,5 @@
 import { isNil } from 'ramda';
-import { prop, Ref, instanceMethod, InstanceType } from '@typegoose/typegoose';
+import { prop, Ref, instanceMethod, DocumentType } from '@typegoose/typegoose';
 import { Model } from 'mongoose';
 import { CommonModel, CommonModelDTO } from '../CommonModel';
 import { ExtSource } from '../ExtSource';
@@ -32,8 +32,8 @@ abstract class ExtEntity extends CommonModel {
     @instanceMethod
     public async upsert(): Promise<this> {
         const is_instanceof_model = this instanceof Model;
-        const model: Model<InstanceType<ExtEntity>> = is_instanceof_model ? (this.constructor as never) : this.getModelForClass(this.constructor);
-        const data = (this as InstanceType<this>).toObject();
+        const model: Model<DocumentType<ExtEntity>> = is_instanceof_model ? (this.constructor as never) : this.getModelForClass(this.constructor);
+        const data = (this as DocumentType<this>).toObject();
         if (is_instanceof_model) {
             ['_id', '__v', 'is_notifications_send', 'is_active'].forEach((key) => delete data[key]);
         }

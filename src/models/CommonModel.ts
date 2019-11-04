@@ -1,4 +1,4 @@
-import { Typegoose, prop, staticMethod, pre, GetModelForClassOptions, InstanceType } from '@typegoose/typegoose';
+import { Typegoose, prop, staticMethod, pre, GetModelForClassOptions, DocumentType } from '@typegoose/typegoose';
 
 
 type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getModelForClass' | 'setModelForClass' | 'buildSchema'> &
@@ -7,7 +7,7 @@ type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getM
 
 @pre<CommonModel>('save', function(next) {
     try {
-        (this as InstanceType<CommonModel>).increment();
+        (this as DocumentType<CommonModel>).increment();
     } catch (err) {
         console.error('CommonModel::preSave ', err);
     }
