@@ -12,6 +12,9 @@ type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getM
     }
     return next();
 })
+@pre<CommonModel>(/^[uU]pdate/, async function() {
+    this.update({}, { $inc: { __v: 1 } });
+})
 @modelOptions({
     schemaOptions: { timestamps: true }
 })
