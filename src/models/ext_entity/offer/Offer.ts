@@ -1,4 +1,4 @@
-import { prop, index, getModelForClass } from '@typegoose/typegoose';
+import { prop, Ref, index, getModelForClass, mongoose } from '@typegoose/typegoose';
 import { Money } from '../../../tools/money';
 import { ExtEntity, ExtEntityDTO } from '../ExtEntity';
 
@@ -8,7 +8,7 @@ import { ExtEntity, ExtEntityDTO } from '../ExtEntity';
 class Offer extends ExtEntity {
 
     @prop({ required: true })
-    public price!: Money;
+    public price!: Ref<Money>;
 
 }
 

@@ -27,14 +27,6 @@ export default abstract class CommonModel {
 
     @prop({ default: true })
     public is_active!: boolean;
-
-    // @staticMethod
-    // // public static getModelForClass<T extends CommonModel>(schemaOptions?: GetModelForClassOptions['schemaOptions']) {
-    // public static getModelForClass<T extends CommonModel>(schemaOptions?: IModelOptions) {
-    //     const x = Reflect.construct(this, []) as T;
-    //     schemaOptions = Object.assign({timestamps: true}, schemaOptions || {});
-    //     return x.getModelForClass(this, { schemaOptions });
-    // }
 }
 
 export { CommonModel, CommonModelDTO };
