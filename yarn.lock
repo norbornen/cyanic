@@ -18,7 +18,7 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@typegoose/typegoose@^6.0.4":
+"@typegoose/typegoose@^6.1.0":
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@typegoose/typegoose/-/typegoose-6.1.0.tgz#5acdd60c3c4c53e3428e03a71b7b36d4696f1e06"
   integrity sha512-aYPgVTM9tl31tZVZ6A45cKrP7+Qv+AJbF8Qa2msFLL47VPanb7N1Xm1qzBLE9QQAxdHMDN5ZJcNAcs0qndZUoQ==
