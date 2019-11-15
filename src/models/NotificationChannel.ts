@@ -23,7 +23,7 @@ class NotificationChannel extends CommonModel {
     public name?: string;
 
     // провайдер
-    @prop({ enum: NotificationChannelProvider, required: true })
+    @prop({ enum: NotificationChannelProvider, type: String, required: true })
     public provider!: NotificationChannelProvider;
 
     // настройки соединения

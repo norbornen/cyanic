@@ -30,18 +30,17 @@ abstract class ExtEntity extends CommonModel {
     @prop({ default: false })
     public is_notifications_send?: boolean;
 
-    public async upsert(): Promise<this> {
-        const is_instanceof_model = this instanceof Model;
-        const ctor = getClassForDocument(this as DocumentType<this>)! as AnyParamConstructor<this>;
+    public async upsert(this: DocumentType<ExtEntity>): Promise<DocumentType<ExtEntity>> {
+        const ctor = getClassForDocument(this)! as AnyParamConstructor<this>;
         const model = getModelForClass(ctor);
 
-        const data = (this as DocumentType<this>).toObject();
+        const data = this.toObject();
         ['_id', '__v', 'is_notifications_send', 'is_active'].forEach((key) => delete data[key]);
 
 
         const item = await model.findOneAndUpdate(
             { ext_id: data.ext_id, source: data.source },
-            data,
+            { ...data, $inc: { __v: 1 } },
             { new: true, upsert: true, setDefaultsOnInsert: true, runValidators: true }
         );
         if (!('ext_updated_at' in item) || isNil(item.ext_updated_at)) {

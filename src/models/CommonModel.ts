@@ -1,20 +1,20 @@
-import { prop, pre, modelOptions, DocumentType } from '@typegoose/typegoose';
+import { prop, pre, modelOptions, DocumentType,  } from '@typegoose/typegoose';
+import { Query } from 'mongoose';
 
 type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getModelForClass' | 'setModelForClass' | 'buildSchema'> &
                             { createdAt?: Date, updatedAt?: Date, is_active?: boolean };
 
 
-@pre<CommonModel>('save', function(next) {
+@pre<DocumentType<CommonModel>>('save', function(next) {
     try {
-        (this as DocumentType<CommonModel>).increment();
+        this.increment();
     } catch (err) {
         console.error('CommonModel::preSave ', err);
     }
     return next();
 })
-@pre<CommonModel>(/^[uU]pdate/, async function() {
-    this.update({}, { $inc: { __v: 1 } });
-})
+// @pre<Query<DocumentType<CommonModel>>>(/[uU]pdate/, async function() {
+// })
 @modelOptions({
     schemaOptions: { timestamps: true }
 })

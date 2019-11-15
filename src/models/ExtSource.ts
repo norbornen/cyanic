@@ -25,7 +25,7 @@ class ExtSource extends CommonModel {
     public alias?: string;
 
     // транспорт
-    @prop({ enum: ExtSourceTransport, required: true })
+    @prop({ enum: ExtSourceTransport, type: String, required: true })
     public transport!: ExtSourceTransport;
 
     // параметры соединения и запросов

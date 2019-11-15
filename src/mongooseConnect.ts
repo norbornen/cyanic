@@ -1,6 +1,9 @@
 import mongoose, { Mongoose, ConnectionOptions } from 'mongoose';
+import { setGlobalOptions } from '@typegoose/typegoose';
 
 mongoose.set('debug', process.env.NODE_ENV === 'development');
+setGlobalOptions({ globalOptions: { useNewEnum: true } });
+
 const connectionOptions: ConnectionOptions =  {
     useNewUrlParser: true,
     useCreateIndex: true,
