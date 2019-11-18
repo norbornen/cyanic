@@ -13,6 +13,8 @@ export default class CianExtEntityFactory extends AbstractExtEntityFactory {
         const currency = pathOr<string>(this.default_currency, ['bargainTerms', 'currency'], extFlatOffer).toLocaleUpperCase();
         const price: FlatOfferDTO['price'] = new Money(amount!, currency);
         //
+        const photos = ((extFlatOffer.photos || []) as Array<Dictionary<any>>).map((x): string => x.fullUrl);
+        //
         const latitude = path<number>(['geo', 'coordinates', 'lat'], extFlatOffer);
         const longitude = path<number>(['geo', 'coordinates', 'lng'], extFlatOffer);
         const addressShort = pathOr<Array<Dictionary<any>>>([], ['geo', 'address'], extFlatOffer)
@@ -40,8 +42,10 @@ export default class CianExtEntityFactory extends AbstractExtEntityFactory {
             ext_id: (path<string>(['cianId'], extFlatOffer) || path<string>(['id'], extFlatOffer))!,
             ext_full_url: path<string>(['fullUrl'], extFlatOffer)!,
             rooms_count: path<number | string>(['roomsCount'], extFlatOffer)!,
+            total_area: path<number | string>(['totalArea'], extFlatOffer)!,
             floor_number: path<number | string>(['floorNumber'], extFlatOffer),
             floors_total: path<number | string | null>(['building', 'floorsCount'], extFlatOffer)!,
+            photos,
             price, location
         };
         let ext_updated_at: Date | undefined;

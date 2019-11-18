@@ -29,6 +29,8 @@ export default class LocalsExtEntityFactory extends AbstractExtEntityFactory {
             ext_id: path<string>(['id'], extFlatOffer)!,
             ext_full_url: this.baseURL + path<string>(['path'], extFlatOffer)!,
             rooms_count: path<number | string>(['rooms'], extFlatOffer)!,
+            total_area: path<number | string>(['space'], extFlatOffer),
+            photos: path<string[]>(['thumb_image_urls'], extFlatOffer),
             price, location
         };
         return new FlatOfferModel(offer);

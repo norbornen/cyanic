@@ -1,4 +1,4 @@
-import { prop, pre, modelOptions, DocumentType,  } from '@typegoose/typegoose';
+import { prop, pre, modelOptions, DocumentType } from '@typegoose/typegoose';
 import { Query } from 'mongoose';
 
 type CommonModelDTO<T> = Omit<T, 'createdAt' | 'updatedAt' | 'is_active' | 'getModelForClass' | 'setModelForClass' | 'buildSchema'> &

@@ -1,4 +1,4 @@
-import { path, Dictionary } from 'ramda';
+import { path } from 'ramda';
 import { prop, pre, getDiscriminatorModelForClass } from '@typegoose/typegoose';
 import { OfferModel, Offer, OfferDTO, Money } from './Offer';
 
@@ -22,16 +22,20 @@ const oddAddressPartRegexp = /(Россия|г\.?\s?Москва|Москва),\
 class FlatOffer extends Offer {
 
     @prop({ required: true })
-    public rooms_count!: string | number;
-
-    @prop()
-    public floor_number?: string | number;
-
-    @prop()
-    public floors_total?: string | number;
+    public location!: FlatOfferLocation;
 
     @prop({ required: true })
-    public location!: FlatOfferLocation;
+    public rooms_count!: number | string;
+
+    @prop()
+    public total_area?: number | string;
+
+    @prop()
+    public floor_number?: number | string;
+
+    @prop()
+    public floors_total?: number | string;
+
 }
 
 type FlatOfferDTO = OfferDTO<FlatOffer>;

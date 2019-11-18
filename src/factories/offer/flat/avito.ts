@@ -26,6 +26,10 @@ export default class AvitoExtEntityFactory extends AbstractExtEntityFactory {
         const rooms_count = pathOr<number | string>('-', ['ext', 'rooms'], extFlatOffer);
         const floor_number = pathOr<number | string>('-', ['ext', 'floor'], extFlatOffer);
         const floors_total = pathOr<number | string>('-', ['ext', 'floors_count'], extFlatOffer);
+        let total_area = path<number | string>(['ext', 'area'], extFlatOffer);
+        if (!isNil(total_area) && !isEmpty(total_area)) {
+            total_area = `${total_area}`.replace(/[^\d.,]/g, '');
+        }
 
         //
         const offer: FlatOfferDTO = {
@@ -33,6 +37,7 @@ export default class AvitoExtEntityFactory extends AbstractExtEntityFactory {
             ext_id: path<string>(['id'], extFlatOffer)!,
             ext_full_url: this.baseURL + path<string>(['url'], extFlatOffer)!,
             rooms_count: rooms_count && /^\d+$/.test(rooms_count + '') ? Number(rooms_count) : rooms_count,
+            total_area,
             floor_number: floor_number && /^\d+$/.test(floor_number + '') ? Number(floor_number) : floor_number,
             floors_total: floors_total && /^\d+$/.test(floors_total + '') ? Number(floors_total) : floors_total,
             price, location,
@@ -42,6 +47,9 @@ export default class AvitoExtEntityFactory extends AbstractExtEntityFactory {
             if (ext_updated_at && !isNaN(ext_updated_at.getTime())) {
                 offer.ext_updated_at = ext_updated_at;
             }
+        }
+        if ('image' in extFlatOffer && !isNil(extFlatOffer.image) && !isEmpty(extFlatOffer.image)) {
+            offer.photos = [ extFlatOffer.image ];
         }
 
         return new FlatOfferModel(offer);

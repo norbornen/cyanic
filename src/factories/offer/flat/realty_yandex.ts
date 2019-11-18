@@ -31,8 +31,10 @@ export default class YandexExtEntityFactory extends AbstractExtEntityFactory {
             ext_id: path<string>(['offerId'], extFlatOffer)!,
             ext_full_url: 'https:' + path<string>(['unsignedInternalUrl'], extFlatOffer)!,
             rooms_count: path<number | string>(['roomsTotal'], extFlatOffer)!,
+            total_area: path<number | string>(['area', 'value'], extFlatOffer),
             floor_number,
             floors_total: path<number | string | null>(['floorsTotal'], extFlatOffer)!,
+            photos: path<string[]>(['fullImages'], extFlatOffer),
             price, location
         };
         let ext_updated_at: Date | undefined;

@@ -10,6 +10,9 @@ class Offer extends ExtEntity {
     @prop({ required: true })
     public price!: Ref<Money>;
 
+    @prop()
+    public photos?: string[];
+
 }
 
 type OfferDTO<T extends Offer> = ExtEntityDTO<T>;
