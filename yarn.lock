@@ -72,12 +72,12 @@
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.0.tgz#2a5fa918786d07d3725726f7f650527e1cfeaffd"
   integrity sha512-c4zji5CjWv1tJxIZkz1oUtGcdOlsH3aza28Nqmm+uNDWBRHoMsjooBEN4czZp1V3iXPihE/VRUOBqg+4Xq0W4g==
 
-"@types/ramda@^0.26.34":
-  version "0.26.34"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.26.34.tgz#e65df964a077e9eb97c412483446681a23e56def"
-  integrity sha512-5x+oE6PzERYl4IPqjj8DwvlLAz2DiQGv0KMuWM3a1byqQ8k8ebmGWw5TAtpVtDwdQEhs1KVdCtOaLy0iwuqwdQ==
+"@types/ramda@^0.27.0":
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.27.0.tgz#e6df564a5f9637c93e708b4fdb948c6a5457ecad"
+  integrity sha512-/Iw94cBUhU8RS6HvFs0WNrxLrOHS4VdCbaWWemrqaXM4GqNYdw/wtWQXk8nAjMj4YC4EXMumbYGO+D9yhACCLQ==
   dependencies:
-    ts-toolbelt "^4.10.7"
+    ts-toolbelt "^6.3.3"
 
 agent-base@4, agent-base@^4.2.0, agent-base@^4.3.0:
   version "4.3.0"
@@ -934,10 +934,10 @@ ts-node@^8.5.2:
     source-map-support "^0.5.6"
     yn "^3.0.0"
 
-ts-toolbelt@^4.10.7:
-  version "4.10.8"
-  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-4.10.8.tgz#f04a0b5bc7bccd52246d65b6bd99b7d4d340e7bf"
-  integrity sha512-ExcghPTsrsfAgcxZ30YT9jXySjd1j6wtV/xcyxDaNCM75w7vkxH8wuuHG1gYv9v2sfiV6F/7LL0lH0QagleHLw==
+ts-toolbelt@^6.3.3:
+  version "6.3.6"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.3.6.tgz#2bde29106c013ed520c32f30e1248daf8fd4f5f9"
+  integrity sha512-eVzym+LyQodOCfyVyQDQ6FGYbO2Xf9Nc4dGLRKlKSUpAs+8qQWHG+grDiA3ciEuNPNZ0qJnNIYkdqBW1rCWuUA==
 
 tslib@^1.10.0, tslib@^1.8.0, tslib@^1.8.1:
   version "1.10.0"
