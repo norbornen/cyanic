@@ -9,10 +9,10 @@ import { pipesFactory } from '../pipes';
 
 export class ImportUsecase {
 
-    public async getExtEntitiesByExtSource(extSource: DocumentType<ExtSource>): Promise<Array<DocumentType<ExtEntity>>> {
+    public async getExtEntitiesByExtSource(extSource: DocumentType<ExtSource>): Promise<DocumentType<ExtEntity>[]> {
         const provider = transportProviderFactory(extSource);
 
-        const raw_entities: Array<Dictionary<any> | null> = await provider.getExtEntities();
+        const raw_entities: (Dictionary<any> | null)[] = await provider.getExtEntities();
 
         // apply pipes_before
         if ('pipes_before' in extSource && extSource.pipes_before) {
@@ -40,7 +40,7 @@ export class ImportUsecase {
             }
         }
 
-        const extEntities: Array<DocumentType<ExtEntity>> = [];
+        const extEntities: DocumentType<ExtEntity>[] = [];
         const factory = await extEntityFactoryProvider(extSource);
         for (const raw_entity of raw_entities) {
             if (!(isNil(raw_entity) || isEmpty(raw_entity))) {
@@ -58,7 +58,7 @@ export class ImportUsecase {
         return extEntities;
     }
 
-    public async getExtEntities(): Promise<Array<DocumentType<ExtEntity>>> {
+    public async getExtEntities(): Promise<DocumentType<ExtEntity>[]> {
         const extSources = await ExtSourceModel.find({ is_active: true });
 
         const importResults = await pSettle(
@@ -74,14 +74,14 @@ export class ImportUsecase {
                     acc = acc.concat(x.value);
                 }
                 return acc;
-            }, [] as Array<DocumentType<ExtEntity>>)
+            }, [] as DocumentType<ExtEntity>[])
             .filter((entity) => !(isNil(entity) || isEmpty(entity)));
 
         return extEntities;
     }
 
-    public async updateExtEntities(extEntities: Array<DocumentType<ExtEntity>>): Promise<Array<DocumentType<ExtEntity>>> {
-        const entities: Array<DocumentType<ExtEntity>> = [];
+    public async updateExtEntities(extEntities: DocumentType<ExtEntity>[]): Promise<DocumentType<ExtEntity>[]> {
+        const entities: DocumentType<ExtEntity>[] = [];
         for (const entity of extEntities) {
             try {
                 const item = await entity.upsert();
@@ -93,7 +93,7 @@ export class ImportUsecase {
         return entities;
     }
 
-    public async getAndUpdateExtEntities(): Promise<Array<DocumentType<ExtEntity>>> {
+    public async getAndUpdateExtEntities(): Promise<DocumentType<ExtEntity>[]> {
         const extEntities = await this.getExtEntities();
         return this.updateExtEntities(extEntities);
     }

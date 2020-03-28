@@ -46,7 +46,7 @@ class ExtSource extends CommonModel {
 
     // каналы по которым нужно высылать уведомления о новых записях
     @arrayProp({ itemsRef: NotificationChannel })
-    public notification_channels?: Array<Ref<NotificationChannel>>;
+    public notification_channels?: Ref<NotificationChannel>[];
 }
 
 type ExtSourceDTO = CommonModelDTO<ExtSource>;

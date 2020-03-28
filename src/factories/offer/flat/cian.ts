@@ -13,17 +13,17 @@ export default class CianExtEntityFactory extends AbstractExtEntityFactory {
         const currency = pathOr<string>(this.default_currency, ['bargainTerms', 'currency'], extFlatOffer).toLocaleUpperCase();
         const price: FlatOfferDTO['price'] = new Money(amount!, currency);
         //
-        const photos = ((extFlatOffer.photos || []) as Array<Dictionary<any>>).map((x): string => x.fullUrl);
+        const photos = ((extFlatOffer.photos || []) as Dictionary<any>[]).map((x): string => x.fullUrl);
         //
         const latitude = path<number>(['geo', 'coordinates', 'lat'], extFlatOffer);
         const longitude = path<number>(['geo', 'coordinates', 'lng'], extFlatOffer);
-        const addressShort = pathOr<Array<Dictionary<any>>>([], ['geo', 'address'], extFlatOffer)
+        const addressShort = pathOr<Dictionary<any>[]>([], ['geo', 'address'], extFlatOffer)
             .filter((x) => x && CianExtEntityFactory.EXCLUDE_ADDRESS_ITEM_GEOTYPE.indexOf(x.geoType) === -1)
             .map((x) => path<string>(['fullName'], x) || path<string>(['name'], x))
             .filter((name) => !(isNil(name) || isEmpty(name)))
             .join(', ')
             || path<string>(['geo', 'userInput'], extFlatOffer);
-        const addressFull = pathOr<Array<Dictionary<any>>>([], ['geo', 'address'], extFlatOffer)
+        const addressFull = pathOr<Dictionary<any>[]>([], ['geo', 'address'], extFlatOffer)
             .map((x) => path<string>(['fullName'], x) || path<string>(['name'], x))
             .filter((name) => !(isNil(name) || isEmpty(name)))
             .join(', ');

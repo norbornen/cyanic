@@ -3,7 +3,7 @@ import { Dictionary } from 'ramda';
 import { createHttpAgent } from '../../tools/agent';
 import { ExtSourceConnection } from '../../models/ExtSource';
 
-type ArrayOfDictionary<T> = Array<Dictionary<T>>;
+type ArrayOfDictionary<T> = Dictionary<T>[];
 
 type CtorArgs = [ExtSourceConnection, any?];
 
@@ -24,7 +24,7 @@ export default abstract class AbstractTransportProvider {
         return this._agent;
     }
 
-    public abstract async getExtEntities(): Promise<Array<Dictionary<any>>>;
+    public abstract async getExtEntities(): Promise<Dictionary<any>[]>;
 }
 
 export { AbstractTransportProvider, CtorArgs, ArrayOfDictionary };
