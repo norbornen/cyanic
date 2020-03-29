@@ -632,10 +632,10 @@ p-reflect@^2.1.0:
   resolved "https://registry.yarnpkg.com/p-reflect/-/p-reflect-2.1.0.tgz#5d67c7b3c577c4e780b9451fc9129675bd99fe67"
   integrity sha512-paHV8NUz8zDHu5lhr/ngGWQiW067DK/+IbJ+RfZ4k+s8y4EKyYCz8pGYWjxCg35eHztpJAt+NUgvN4L+GCbPlg==
 
-p-settle@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/p-settle/-/p-settle-4.0.0.tgz#07fb60aded04527eadd617c9fd6801364c4737b8"
-  integrity sha512-MK1FEHO70HHo4uCjM2DP/2gOpLGjEes8czFH7bP9RzJS6mAEp7dFINcUUuuQXa+ZFztzKTdF3zl0IiBH1BCkrQ==
+p-settle@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/p-settle/-/p-settle-4.0.1.tgz#1179f77eb574c73f8e545a7d840fd167762af1fe"
+  integrity sha512-/9fOVH7ipE/TSaxHLZ95XklVLaX2rlOcocE17N/YARHaFbdKwf0jDnIVW22MVQ8sn3AjuJ0XIwylg6GZ3Lhg6Q==
   dependencies:
     p-limit "^2.2.2"
     p-reflect "^2.1.0"
