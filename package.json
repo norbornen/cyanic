@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@typegoose/typegoose": "^6.4.0",
-    "@types/ejs": "^3.0.1",
+    "@types/ejs": "^3.0.2",
     "@types/mongoose": "^5.7.8",
     "@types/node": "^13.9.5",
     "@types/qs": "^6.9.1",
