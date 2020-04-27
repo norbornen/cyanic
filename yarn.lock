@@ -41,10 +41,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/ejs@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@types/ejs/-/ejs-3.0.1.tgz#ef3d3d8cf1710a69c3b25dde9bbc7b21ae7c5969"
-  integrity sha512-e8zAwnKg8lGy8MpAZx7gblNXY4agrAXH9YaAWYsMIfvusHdoS50WvwlcBb75JP8U2rg99PqxbEIstbiZSPAnEg==
+"@types/ejs@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/ejs/-/ejs-3.0.3.tgz#aa88c117fb4e666ece7348e8620d0c57b3cc2ad3"
+  integrity sha512-vkPNcai0FAHsaqLXObm1bTr87XOwfAS1a/jUx5b+Mj+lUToeEcgMIcdE0PuU0CdWq4VkNJYgLa0asYjrNb/maA==
 
 "@types/mongodb@*":
   version "3.5.4"
