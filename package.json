@@ -20,7 +20,7 @@
     "@types/mongoose": "^5.7.8",
     "@types/node": "^13.9.5",
     "@types/qs": "^6.9.1",
-    "@types/ramda": "^0.27.0",
+    "@types/ramda": "^0.27.5",
     "axios": "^0.19.2",
     "ejs": "^3.0.1",
     "mongoose": "^5.9.6",
