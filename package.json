@@ -15,7 +15,7 @@
     "build": "rm -rf dist && tsc --strict && chmod +x dist/scripts/updater.js dist/scripts/notifier.js"
   },
   "dependencies": {
-    "@typegoose/typegoose": "^6.4.0",
+    "@typegoose/typegoose": "^7.1.2",
     "@types/ejs": "^3.0.1",
     "@types/mongoose": "^5.7.8",
     "@types/node": "^13.9.5",
