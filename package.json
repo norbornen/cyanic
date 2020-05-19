@@ -23,7 +23,7 @@
     "@types/ramda": "^0.27.0",
     "axios": "^0.19.2",
     "ejs": "^3.0.1",
-    "mongoose": "^5.9.6",
+    "mongoose": "^5.9.15",
     "p-settle": "^4.0.0",
     "proxy-agent": "^3.1.1",
     "qs": "^6.9.3",
