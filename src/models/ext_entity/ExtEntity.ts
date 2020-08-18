@@ -19,7 +19,7 @@ abstract class ExtEntity extends CommonModel {
     public ext_full_url!: string;
 
     // хранилище необработанных данных полученных из внешнего источника
-    @prop({ select: false })
+    // @prop({ select: false })
     public ext_data?: object;
 
     // дата последнего обновления записи во внешнем источнике
