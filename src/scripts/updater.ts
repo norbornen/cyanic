@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// NODE_OPTIONS='--http-parser=legacy --insecure-http-parser' ./dist/scripts/updater.js
 import createConnection, { disconnect } from '../mongooseConnect';
 import { ImportUsecase } from '../usecases/ImportUsecase';
 
