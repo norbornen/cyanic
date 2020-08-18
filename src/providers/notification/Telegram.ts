@@ -1,13 +1,14 @@
 import { isNil, isEmpty } from 'ramda';
 import * as ejs from 'ejs';
-import Telegraf, { ContextMessageUpdate, TelegrafOptions } from 'telegraf';
+import { Telegraf, Context } from 'telegraf';
+import { TelegrafOptions } from 'telegraf/typings/telegraf';
 import { ExtraEditMessage } from 'telegraf/typings/telegram-types';
 import ProxyAgent from 'proxy-agent';
 import AbstractNotifcationProvider, { CtorArgs } from './abstract';
 
 
 class TelegramNotifcationProvider extends AbstractNotifcationProvider {
-    private _bot!: Telegraf<ContextMessageUpdate>;
+    private _bot!: Telegraf<Context>;
     private compiled!: ejs.AsyncTemplateFunction;
     private readonly sendMessageExtraParameters: ExtraEditMessage = { parse_mode: 'HTML', disable_web_page_preview: true };
 
@@ -16,7 +17,7 @@ class TelegramNotifcationProvider extends AbstractNotifcationProvider {
         this.compiled = ejs.compile(this.template!.html, { async: true });
     }
 
-    private get bot(): Telegraf<ContextMessageUpdate> {
+    private get bot(): Telegraf<Context> {
         if (!this._bot) {
             const telegrafOptions: TelegrafOptions = {};
             if ('proxy' in this.connection && !isNil(this.connection.proxy) && !isEmpty(this.connection.proxy)) {
